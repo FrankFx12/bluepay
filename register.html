@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BluePay | Register</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0055cc; /* blue background */
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* top help link */
+    .help-link {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 0.9rem;
+    }
+    .help-link a {
+      color: #fff;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    .register-box {
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .register-box h1 {
+      margin-bottom: 5px;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .register-box h2 {
+      margin: 5px 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .register-box p {
+      font-size: 0.9rem;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: 2px solid #003366;
+    }
+
+    .terms {
+      margin: 15px 0;
+      font-size: 0.8rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      background: #fff;
+      color: #0055cc;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #e6e6e6;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+
+    .login-link a {
+      color: #fff;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    /* Password wrapper */
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-wrapper input {
+      padding-right: 45px; /* space for eye */
+    }
+
+    .toggle-eye {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #333;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Help link top right -->
+  <div class="help-link">
+    <a href="https://t.me/bpc_customer_care" target="_blank">You Need Help?</a>
+  </div>
+
+  <div class="register-box">
+    <h1>BLUEPAY</h1>
+    <h2>Welcome!</h2>
+    <p>Get your account ready and instantly start buying, selling airtime and data online and start paying all your bills in cheaper price.</p>
+
+    <form action="pin.html">
+      <div class="form-group">
+        <label for="name">Your Full Name</label>
+        <input type="text" id="name" name="name" autocomplete="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" autocomplete="email" required>
+      </div>
+
+      <div class="form-group password-wrapper">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="new-password" required>
+        <span class="toggle-eye" onclick="togglePassword()" id="eyeIcon">👁</span>
+      </div>
+
+      <div class="terms">
+        Any further actions indicates that you agree with our terms &amp; conditions!
+      </div>
+
+      <button type="submit" class="btn">Create account</button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a href="login.html">Sign in</a>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passwordField = document.getElementById("password");
+      const eyeIcon = document.getElementById("eyeIcon");
+
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        eyeIcon.textContent = "🙈";
+      } else {
+        passwordField.type = "password";
+        eyeIcon.textContent = "👁";
+      }
+     }
+  document.querySelector("form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    // save name into localStorage
+    const name = document.getElementById("name").value;
+    localStorage.setItem("userName", name);
+    // Example after form submit or "Create Account" button
+const userName = document.getElementById("name").value; // or whatever your name input id is
+localStorage.setItem("userName", userName);
+window.location.href = "dashboard.html"; // redirect to dashboard
+
+
+    // redirect to pin page
+    window.location.href = "pin.html";
+  });
+
+  localStorage.setItem("username", nameValue);
+  localStorage.setItem("useremail", emailValue);
+
+  window.onload = function() {
+    document.getElementById("buyerName").value = localStorage.getItem("username") || "";
+    document.getElementById("buyerEmail").value = localStorage.getItem("useremail") || "";
+  };
+</script>
+
+
+</script>
+</body>
+</html>

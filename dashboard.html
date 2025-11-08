@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLUEPAY Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f5f6fa;
+      color: #111;
+      overflow-x: hidden;
+    }
+
+    /* === MOVING ALERT MESSAGE === */
+    .alert-banner {
+      background: #fff;
+      color: red;
+      padding: 8px 10px;
+      font-weight: 600;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+      border-bottom: 1px solid #eee;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .alert-banner span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scrollText 12s linear infinite;
+    }
+
+    @keyframes scrollText {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* === MAIN NAVBAR === */
+    .nav-bar {
+      background: #0047FF;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 18px;
+      position: relative;
+      z-index: 100;
+    }
+
+    .nav-bar h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .menu-btn,
+    .bell-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .bell-btn i {
+      font-size: 20px;
+    }
+
+    /* === SIDE MENU === */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 90;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 260px;
+      height: 100%;
+      background: #fff;
+      box-shadow: 3px 0 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      z-index: 101;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar h2 {
+      color: #0047FF;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .sidebar button,
+    .sidebar a {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #fff;
+      background: #0047FF;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .sidebar button:hover,
+    .sidebar a:hover {
+      opacity: 0.9;
+    }
+
+    .close-btn {
+      background: none;
+      color: #0047FF;
+      font-size: 22px;
+      border: none;
+      align-self: flex-end;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    /* === USER GREETING CARD === */
+    .user-greet {
+      background: #fff;
+      margin: 14px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .greet-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #FFC107;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .greet-left h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .greet-right i {
+      font-size: 18px;
+      color: #0047FF;
+    }
+
+    @media (max-width: 500px) {
+      .nav-bar h1 {
+        font-size: 16px;
+      }
+
+      .alert-banner {
+        font-size: 12px;
+      }
+
+      .sidebar {
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- MOVING ALERT -->
+  <div class="alert-banner">
+    <span>⚠️ Dear User, we're currently experiencing issues with Opay bank transactions. Kindly use another bank or
+      contact your admin. ⚠️</span>
+  </div>
+
+  <!-- MAIN NAVBAR -->
+  <div class="nav-bar">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <h1>BLUEPAY</h1>
+    <button class="bell-btn" onclick="window.open('https://t.me/bpc_customer_care','_blank')">
+      <i class="fa-solid fa-bell"></i>
+    </button>
+  </div>
+
+  <!-- SIDE MENU -->
+  <div id="overlay" class="overlay"></div>
+  <div id="sidebar" class="sidebar">
+    <button class="close-btn" id="closeMenu">×</button>
+    <h2>👤 Admin</h2>
+    <button id="backDashboard">🏠 Back to Dashboard</button>
+    <a href="https://t.me/bpc_customer_care" target="_blank">💬 Support</a>
+    <button id="logoutBtn">🚪 Logout</button>
+  </div>
+
+  <!-- USER GREETING CARD -->
+  <div class="user-greet">
+    <div class="greet-left">
+      <div class="avatar">👤</div>
+      <h2 id="username">Hi, User</h2>
+    </div>
+    <div class="greet-right">
+      <i class="fa-solid fa-bell"></i>
+    </div>
+  </div>
+
+  <script>
+    // show stored user name
+    const userName = localStorage.getItem("userName") || "User";
+    document.getElementById("username").textContent = `Hi, ${userName}`;
+
+    // side menu controls
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const closeMenu = document.getElementById("closeMenu");
+
+    menuBtn.onclick = () => {
+      sidebar.classList.add("open");
+      overlay.style.display = "block";
+    };
+    closeMenu.onclick = () => {
+      sidebar.classList.remove("open");
+      overlay.style.display = "none";
+    };
+    overlay.onclick = () => {
+      sidebar.classList.remove("open");
+      overlay.style.display = "none";
+    };
+
+    // buttons
+    document.getElementById("backDashboard").onclick = () => alert("Already on Dashboard!");
+    document.getElementById("logoutBtn").onclick = () => {
+      localStorage.clear();
+      alert("Logged out successfully!");
+      location.reload();
+    };
+  </script>
+
+</body>
+
+</html>
+<!-- BALANCE CARD -->
+<section class="balance-card">
+  <div class="balance-info">
+    <p class="balance-label">Available Balance</p>
+    <h2 id="balanceAmount">₦200,000</h2>
+
+    <div class="spend-target">
+      <div class="target-top">
+        <p>Daily spend target</p>
+        <span class="target-value">₦200,000</span>
+      </div>
+      <div class="target-bar">
+        <div class="target-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="withdraw-btn" onclick="window.location.href='withdraw.html'">Withdraw</button>
+</section>
+
+<style>
+  /* === BALANCE CARD (Compact Version) === */
+  .balance-card {
+    background: #0047FF;
+    color: #fff;
+    margin: 14px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .balance-info {
+    flex: 1;
+  }
+
+  .balance-label {
+    font-size: 13px;
+    opacity: 0.9;
+  }
+
+  #balanceAmount {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 4px 0 10px;
+  }
+
+  .spend-target {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 6px 10px;
+  }
+
+  .target-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .target-bar {
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .target-fill {
+    height: 5px;
+    width: 70%;
+    background: #fff;
+  }
+
+  .target-value {
+    font-weight: 700;
+  }
+
+  .withdraw-btn {
+    background: #fff;
+    color: #0047FF;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-top: 4px;
+    transition: 0.2s ease;
+  }
+
+  .withdraw-btn:hover {
+    background: #eaf0ff;
+  }
+
+  @media (max-width: 500px) {
+    .balance-card {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .withdraw-btn {
+      align-self: flex-end;
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  // Load balance from localStorage (default ₦200,000)
+  const balance = localStorage.getItem("bp_balance") || "200000";
+  document.getElementById("balanceAmount").textContent =
+    "₦" + Number(balance).toLocaleString();
+</script>
+
+<!-- Options Section -->
+<section class="options-section">
+  <a href="bpc.html" class="option-card">
+    <div class="option-icon"><i class="fa-solid fa-wallet"></i></div>
+    <p>Buy BPC</p>
+  </a>
+  <a href="Watch.html" class="option-card">
+    <div class="option-icon"><i class="fa-solid fa-tv"></i></div>
+    <p>Watch</p>
+  </a>
+  <a href="Airtime.html" class="option-card">
+    <div class="option-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+    <p>Airtime</p>
+  </a>
+  <a href="Data.html" class="option-card">
+    <div class="option-icon"><i class="fa-solid fa-database"></i></div>
+    <p>Data</p>
+  </a>
+</section>
+
+<style>
+  /* === OPTIONS SECTION === */
+  .options-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 20px;
+    flex-wrap: wrap;
+  }
+
+  .option-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(25% - 16px);
+    text-align: center;
+    transition: transform 0.2s ease;
+    text-decoration: none;
+    /* Remove underline from links */
+    color: inherit;
+    /* Inherit text color */
+  }
+
+  .option-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .option-icon {
+    font-size: 28px;
+    color: #0047FF;
+    margin-bottom: 12px;
+  }
+
+  .option-card p {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+  }
+
+  /* Responsive for tablets and smaller screens */
+  @media (max-width: 768px) {
+    .option-card {
+      flex: 1 1 calc(50% - 16px);
+    }
+  }
+
+  @media (max-width: 500px) {
+    .option-card {
+      flex: 1 1 100%;
+    }
+  }
+</style>
+
+
+<!-- More Services Section -->
+<section class="more-services-section">
+  <h3>More Services</h3>
+  <div class="services-grid">
+    <a href="support.html" class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-headset"></i></div>
+      <p>Support</p>
+    </a>
+    <a href="group.html" class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-users"></i></div>
+      <p>Group</p>
+    </a>
+    <a href="earn.html" class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-coins"></i></div>
+      <p>Earn</p>
+    </a>
+    <a href="profile.html" class="service-card">
+      <div class="service-icon"><i class="fa-solid fa-user"></i></div>
+      <p>Profile</p>
+    </a>
+  </div>
+</section>
+
+<style>
+  /* === MORE SERVICES SECTION === */
+  .more-services-section {
+    background: #fff;
+    padding: 18px;
+    margin: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .more-services-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #0047FF;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    background: #f4f7fb;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #111;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+  }
+
+  .service-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .service-icon {
+    font-size: 28px;
+    color: #0047FF;
+    margin-bottom: 12px;
+  }
+
+  .service-card p {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Responsive for tablets and phones */
+  @media (max-width: 768px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 500px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- Important Information Card -->
+<!-- Important Information Card -->
+<section class="info-card">
+  <div class="info-header">
+    <h2>Important Information</h2>
+  </div>
+  <div class="info-body">
+    <div class="steps">
+      <p id="step1" class="step"></p>
+      <p id="step2" class="step"></p>
+      <p id="step3" class="step"></p>
+      <p id="step4" class="step"></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .info-card {
+    background: linear-gradient(145deg, #6c65cc, #c5a0f5);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    color: white;
+  }
+
+  .info-header {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .info-header h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .info-body {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+  }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .step {
+    font-size: 14px;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-radius: 8px;
+    transition: background 0.3s;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid #fff;
+    width: 0;
+    animation: typing 6s steps(50) 1s 1 normal both, blinkCaret 0.75s step-end infinite;
+  }
+
+  .step.active {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .step-number {
+    background-color: #f7c100;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+  }
+
+  /* Typing animation */
+  @keyframes typing {
+    0% {
+      width: 0;
+    }
+
+    100% {
+      width: 100%;
+    }
+  }
+
+  /* Blinking cursor */
+  @keyframes blinkCaret {
+    50% {
+      border-color: transparent;
+    }
+  }
+</style>
+
+<script>
+  // Dynamically populate the steps with text
+  document.getElementById('step1').textContent = "1. Click 'Buy BPC' from dashboard";
+  document.getElementById('step2').textContent = "2. Fill details and amount";
+  document.getElementById('step3').textContent = "3. Complete payment for BPC code";
+  document.getElementById('step4').textContent = "4. Use code for airtime & withdrawals";
+</script>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard with Centered Button</title>
+  <style>
+    /* Basic layout and styles */
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #f5f6fa;
+      color: #111;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 10px;
+      background: #fff;
+      border-radius: 50px;
+      padding: 10px 15px;
+      display: flex;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(3, 27, 48, 0.08);
+      z-index: 999;
+    }
+
+    .bottom-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #5b6b82;
+      font-size: 12px;
+      border-radius: 12px;
+    }
+
+    .bottom-nav .plus {
+      background: #0047FF;
+      color: #fff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 10px 20px rgba(0, 71, 255, 0.1);
+    }
+
+    .bottom-nav a.active {
+      color: #0047FF;
+    }
+
+    /* Responsive adjustment */
+    @media (max-width: 500px) {
+      .bottom-nav {
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 💸 LIVE CASHOUT POPUP -->
+  <div class="popup" id="popup">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="popup-text">Victory just withdrew ₦100k</span>
+  </div>
+
+  <style>
+    .popup {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      background: #22c55e;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transition: all 0.6s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    .popup.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .popup i {
+      font-size: 18px;
+    }
+  </style>
+
+  <script>
+    const popup = document.getElementById("popup");
+    const text = document.getElementById("popup-text");
+
+    const names = ["Victory", "Adola", "Queen", "John", "Blessing", "Maro", "Divine", "Chika", "Emeka", "Precious"];
+    const amounts = [50000, 80000, 100000, 120000, 150000, 200000, 200000, 100000];
+
+    function showPopup() {
+      const randomName = names[Math.floor(Math.random() * names.length)];
+      const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+      text.textContent = `${randomName} just withdrew ₦${randomAmount.toLocaleString()}`;
+
+      popup.classList.add("show");
+
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 4000);
+    }
+
+    // Show one immediately and then every 5s
+    showPopup();
+    setInterval(showPopup, 5000);
+  </script>

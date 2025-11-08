@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BluePay - Create PIN</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #007bff;
+      font-family: Arial, sans-serif;
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 20px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .pin-display {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      background: transparent;
+    }
+
+    .dot.filled {
+      background: #fff;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 70px);
+      gap: 15px;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .key {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.2s;
+    }
+
+    .key:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .actions {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .action-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #fff;
+      color: #007bff;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 18px;
+    }
+
+    .action-btn:hover {
+      background: #e6e6e6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Create PIN</h2>
+    <p>Enter a 4-digit PIN for your wallet</p>
+
+    <!-- PIN dots -->
+    <div class="pin-display">
+      <div class="dot" id="dot1"></div>
+      <div class="dot" id="dot2"></div>
+      <div class="dot" id="dot3"></div>
+      <div class="dot" id="dot4"></div>
+    </div>
+
+    <!-- Keypad -->
+    <div class="keypad">
+      <div class="key" onclick="press(1)">1</div>
+      <div class="key" onclick="press(2)">2</div>
+      <div class="key" onclick="press(3)">3</div>
+      <div class="key" onclick="press(4)">4</div>
+      <div class="key" onclick="press(5)">5</div>
+      <div class="key" onclick="press(6)">6</div>
+      <div class="key" onclick="press(7)">7</div>
+      <div class="key" onclick="press(8)">8</div>
+      <div class="key" onclick="press(9)">9</div>
+      <div></div>
+      <div class="key" onclick="press(0)">0</div>
+      <div></div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <div class="action-btn" onclick="clearPin()">X</div>
+      <div class="action-btn" onclick="submitPin()">✔</div>
+    </div>
+  </div>
+
+  <script>
+    let pin = "";
+    const dots = [
+      document.getElementById("dot1"),
+      document.getElementById("dot2"),
+      document.getElementById("dot3"),
+      document.getElementById("dot4"),
+    ];
+
+    function press(num) {
+      if (pin.length < 4) {
+        pin += num;
+        dots[pin.length - 1].classList.add("filled");
+      }
+    }
+
+    function clearPin() {
+      pin = "";
+      dots.forEach(dot => dot.classList.remove("filled"));
+    }
+
+    function submitPin() {
+      if (pin.length === 4) {
+        // Save PIN (optional: localStorage)
+        localStorage.setItem("userPin", pin);
+        // Go to mining page
+        window.location.href = "mining.html";
+      }
+    }
+  </script>
+</body>
+</html>

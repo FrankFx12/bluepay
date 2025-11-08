@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BLUEPAY — Daily Unlock</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #003366, #0055aa);
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+  }
+
+  .container {
+    background: rgba(255, 255, 255, 0.95);
+    color: #0f1724;
+    border-radius: 14px;
+    padding: 30px 25px;
+    box-shadow: 0 12px 40px rgba(2,10,34,0.35);
+    max-width: 420px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #3f5568;
+  }
+
+  .gift {
+    margin: 25px auto;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f6fbff;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    font-size: 90px; /* Big gift icon */
+  }
+
+  .rotating {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .btn {
+    background: #0066ff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .btn:hover { background: #004ecc; }
+
+  .success {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #00b37e;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Unlock Your Daily Balance</h1>
+    <p>Tap the gift box below to unlock your ₦200,000 balance for today.</p>
+
+    <div class="gift" id="giftBox">🎁</div>
+
+    <button class="btn" id="mineBtn">Start Mining</button>
+    <div class="success" id="successMsg" style="display:none;">
+      ₦200,000 unlocked successfully 🎉 Redirecting...
+    </div>
+  </div>
+
+  <script>
+    const mineBtn = document.getElementById('mineBtn');
+    const giftBox = document.getElementById('giftBox');
+    const successMsg = document.getElementById('successMsg');
+
+    mineBtn.addEventListener('click', () => {
+      mineBtn.disabled = true;
+      mineBtn.textContent = "Mining...";
+      giftBox.classList.add('rotating');
+
+      setTimeout(() => {
+        giftBox.classList.remove('rotating');
+        mineBtn.style.display = 'none';
+        successMsg.style.display = 'block';
+
+        // Auto redirect to dashboard after success
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 2000); // 2 sec after unlock
+      }, 30000); // 30 secs
+    });
+  </script>
+</body>
+</html>

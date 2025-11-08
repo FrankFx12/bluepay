@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BluePay — Withdraw</title>
+<style>
+  :root{
+    --blue:#0a47ff;
+    --dark-blue:#002b99;
+    --bg:#f5f7fb;
+    --white:#fff;
+    --muted:#6b7b8f;
+    --radius:12px;
+    --danger:#d93025;
+    --success:#1e7a3b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:"Poppins",sans-serif;}
+  body{background:var(--bg);color:#0b2033;-webkit-font-smoothing:antialiased}
+
+  header{
+    background:var(--blue);
+    color:#fff;
+    text-align:center;
+    padding:16px;
+    font-weight:700;
+    font-size:18px;
+  }
+
+  main{
+    max-width:520px;
+    margin:20px auto;
+    background:var(--white);
+    padding:22px;
+    border-radius:14px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.08);
+  }
+
+  h2{margin-bottom:14px;color:var(--dark-blue);font-size:20px}
+  label{display:block;margin-top:12px;font-weight:600;color:#16314a;font-size:14px}
+  input,select{
+    width:100%;padding:12px 14px;border:1px solid #dfe4ec;border-radius:10px;margin-top:8px;font-size:15px;background:#fff;
+  }
+  .buy-link{display:block;color:var(--blue);font-weight:600;margin:10px 0 14px 0;text-decoration:none}
+
+  .balance{font-weight:800;margin:10px 0 6px 0}
+  .note{color:var(--muted);font-size:13px;margin-bottom:12px}
+
+  button{
+    width:100%;padding:14px;border:none;border-radius:12px;background:var(--blue);color:#fff;font-weight:800;font-size:16px;cursor:pointer;
+    box-shadow:0 8px 20px rgba(10,71,255,0.18);
+  }
+  button:hover{background:#0040cc}
+
+  /* page "states" - hide/show */
+  .page{display:none;min-height:60vh;align-items:center;justify-content:center;padding:20px}
+  .card{
+    background:var(--white);border-radius:14px;padding:26px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,0.08);max-width:460px;margin:0 auto;
+  }
+  .icon{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:34px}
+  .icon.success{background:#e6f9ef;color:var(--success)}
+  .icon.error{background:#fff0f0;color:var(--danger)}
+  .card h3{font-size:20px;margin-bottom:8px}
+  .card p{color:var(--muted);margin-bottom:18px}
+
+  .tiny-btn{display:inline-block;padding:10px 16px;border-radius:10px;background:var(--blue);color:#fff;text-decoration:none;font-weight:700}
+  .link-muted{color:var(--blue);font-weight:700;text-decoration:none}
+
+  @media(max-width:540px){
+    main{margin:12px;padding:18px}
+    .card{padding:18px}
+    .icon{width:72px;height:72px}
+  }
+
+  /* 🔸 Notice Bar Styling */
+  .notice-bar {
+    background: #fff8e1; /* light yellow background */
+    color: #b45f00;      /* warning text color */
+    font-weight: 600;
+    font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 8px 0;
+    margin-bottom: 10px;
+    border-radius: 6px;
+  }
+
+  /* 🔸 Scrolling Text Animation */
+  .notice-bar span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scrollText 18s linear infinite;
+  }
+
+  @keyframes scrollText {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>Transfer To Bank</header>
+
+<!-- Withdraw form page -->
+<main id="withdrawForm">
+  <h2>Bank Details</h2>
+
+  <label>Account Name</label>
+  <input id="accName" type="text" placeholder="Account Name">
+
+  <label>Account Number</label>
+  <input id="accNumber" type="text" maxlength="10" placeholder="Account Number (10 digits)">
+
+  <label>Select Bank</label>
+  <select id="bank">
+    <option value="">Select Bank</option>
+    <option>Access Bank</option>
+    <option>GTBank</option>
+    <option>First Bank</option>
+    <option>UBA</option>
+    <option>Zenith Bank</option>
+    <option>Fidelity Bank</option>
+    <option>Polaris Bank</option>
+    <option>Opay</option>
+    <option>Moniepoint</option>
+    <option>Palmpay</option>
+    <option>Kuda Bank</option>
+  </select>
+
+  <label>Amount</label>
+  <input id="amount" type="number" placeholder="Enter amount (₦200,000)">
+
+  <label>BPC Code</label>
+  <input id="bpcCode" type="text" placeholder="BPC CODE (Buy BPC)">
+
+  <a class="buy-link" href="bpc.html" target="_self">Buy BPC code</a>
+
+  <div class="balance" id="balanceText">Available Balance: ₦200,000</div>
+  
+
+  <button id="submitBtn">Transfer Funds</button>
+</main>
+
+<div class="notice-bar">
+  <span>⚠️ Opay network is kinda bad right now — use another bank or message your admin for his bank.</span>
+</div>
+
+<!-- Success page -->
+<section id="successPage" class="page" aria-hidden="true">
+  <div class="card" role="region" aria-labelledby="succTitle">
+    <div class="icon success">✔️</div>
+    <h3 id="succTitle">Transfer Successful</h3>
+    <p>Your transfer was successful..</p>
+    <p style="margin-bottom:18px"><a id="teleLink" class="link-muted" href="https://t.me/bpc_customer_care" target="_blank"></a></p>
+    <a id="backToDashboard" class="tiny-btn" href="dashboard.html">Back to Dashboard</a>
+  </div>
+</section>
+
+<!-- Error page -->
+<section id="errorPage" class="page" aria-hidden="true">
+  <div class="card" role="region" aria-labelledby="errTitle">
+    <div class="icon error">✖️</div>
+    <h3 id="errTitle">Transfer Failed</h3>
+    <p id="errReason" style="color:var(--danger);font-weight:700">Invalid details</p>
+    <a href="#" class="tiny-btn" id="tryAgain">Try Again</a>
+  </div>
+</section>
+
+<script>
+(() => {
+  const VALID_BPC = "BPC1346";        // allowed code
+  const MAX_PER_TX = 200000;         // per transaction cap
+  const withdrawForm = document.getElementById('withdrawForm');
+  const successPage = document.getElementById('successPage');
+  const errorPage   = document.getElementById('errorPage');
+  const errReasonEl = document.getElementById('errReason');
+  const balanceText = document.getElementById('balanceText');
+
+  // load stored balance or default to 200k
+ 
+  renderBalance();
+
+  function show(page){
+    withdrawForm.style.display = 'none';
+    successPage.style.display = 'none';
+    errorPage.style.display = 'none';
+    if(page === 'form') withdrawForm.style.display = 'block';
+    if(page === 'success') successPage.style.display = 'flex';
+    if(page === 'error') errorPage.style.display = 'flex';
+  }
+
+  // validation helper
+  function validateForm(data){
+    if(!data.accName) return {ok:false, reason:'Please enter account name.'};
+    if(!/^\d{10}$/.test(data.accNumber)) return {ok:false, reason:'Account number must be 10 digits.'};
+    if(!data.bank) return {ok:false, reason:'Please select a bank.'};
+    if(!data.amount || isNaN(data.amount) || data.amount <= 0) return {ok:false, reason:'Please enter a valid amount.'};
+    if(data.amount > MAX_PER_TX) return {ok:false, reason:`Max per transaction is ₦${MAX_PER_TX.toLocaleString()}.`};
+    if(data.amount > balance) return {ok:false, reason:'Insufficient balance.'};
+    // code check done later to decide success/error page
+    return {ok:true};
+  }
+
+  document.getElementById('submitBtn').addEventListener('click', (e)=>{
+    e.preventDefault();
+    // read inputs
+    const accName = document.getElementById('accName').value.trim();
+    const accNumber = document.getElementById('accNumber').value.trim();
+    const bank = document.getElementById('bank').value;
+    const amount = parseFloat(document.getElementById('amount').value);
+    const code = (document.getElementById('bpcCode').value || '').trim().toUpperCase();
+
+    const v = validateForm({accName, accNumber, bank, amount});
+    if(!v.ok){
+      // show error page with reason
+      errReasonEl.textContent = v.reason;
+      show('error');
+      return;
+    }
+
+    // now check BPC code -> if invalid show error page; if valid, process success
+    if(code !== VALID_BPC){
+      errReasonEl.textContent = 'Invalid BPC Code.';
+      show('error');
+      return;
+    }
+
+    // success path: deduct balance, save txn, show success page
+    balance = Math.max(0, balance - amount);
+    localStorage.setItem('bp_balance', String(balance));
+
+    // add transaction to localStorage top
+    const txns = JSON.parse(localStorage.getItem('bp_txns') || '[]');
+    const ref = 'TX-' + Date.now().toString().slice(-6);
+    txns.unshift(`${new Date().toLocaleString()} — Withdraw ₦${Number(amount).toLocaleString()} to ${bank} (${accNumber}) — Ref:${ref}`);
+    localStorage.setItem('bp_txns', JSON.stringify(txns));
+
+    // show success page
+    show('success');
+  });
+
+  // try again button
+  document.getElementById('tryAgain').addEventListener('click',(ev)=>{
+    ev.preventDefault();
+    show('form');
+  });
+
+  // If user clicks Back to Dashboard link, they return to dashboard.html (you already have that route)
+  // Optionally: update dashboard if it is same origin and open (we store balance & transactions in localStorage so dashboard will read them)
+
+  // initialize on first load to form
+  show('form');
+})();
+</script>
+</body>
+</html>

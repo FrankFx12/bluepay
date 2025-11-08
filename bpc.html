@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BLUEPAY — Buy BPC</title>
+<style>
+  :root{
+    --brand:#0d47a1;
+    --accent:#0066cc;
+    --muted:#617085;
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --radius:12px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:#102234;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  header{
+    background:var(--brand);
+    color:#fff;
+    text-align:center;
+    padding:14px 16px;
+    font-weight:800;
+    letter-spacing:0.3px;
+    position:sticky; top:0; z-index:40;
+  }
+
+  .page {
+    max-width:720px;
+    margin:28px auto;
+    padding:0 16px 80px;
+  }
+
+  .panel {
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:18px;
+    box-shadow:0 12px 30px rgba(6,22,50,0.06);
+    margin-bottom:18px;
+  }
+
+  h2{margin:0 0 10px 0;color:var(--brand)}
+  .muted{color:var(--muted)}
+
+  label{display:block;margin:12px 0 6px;font-weight:700;color:#233645}
+  input[type="text"], input[type="email"]{
+    width:100%; padding:12px 14px; border-radius:10px; border:1px solid #e7eef9; font-size:15px; background:#fff;
+  }
+
+  .btn{display:inline-block;border:0;padding:12px 14px;border-radius:10px;font-weight:800;cursor:pointer}
+  .btn-primary{background:var(--brand);color:#fff;width:100%;margin-top:12px;box-shadow:0 6px 18px rgba(13,71,161,0.12)}
+  .btn-ghost{background:#eef4ff;color:var(--brand);border:1px solid #d7e6ff;padding:10px 12px}
+
+  /* hidden */
+  .hidden{display:none}
+
+  /* processing */
+  .center{text-align:center}
+  .spinner{width:72px;height:72px;border-radius:50%;border:8px solid #eef3fb;border-top-color:var(--brand);margin:18px auto;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .large{font-size:20px;font-weight:800;color:var(--brand)}
+
+  /* cards */
+  .instructions{background:#fcfdff;padding:16px;border-radius:12px;border:1px solid #eef3fb;margin-bottom:14px}
+  .card-row{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:12px;border-radius:12px;border:1px solid #eef3fb;margin-bottom:12px}
+  .card-col{display:flex;flex-direction:column}
+  .label{color:var(--muted);font-weight:700}
+  .value{font-weight:800;color:#0b2033}
+  .copy-btn{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:10px;cursor:pointer}
+
+  .note{font-size:14px;color:var(--muted);text-align:center;margin:12px 0}
+  .timer{font-weight:800;font-size:20px;text-align:center;color:#d32f2f;margin-top:6px}
+
+  /* modal overlay */
+  .overlay{
+    position:fixed;inset:0;background:rgba(6,10,20,0.45);display:none;align-items:center;justify-content:center;
+    z-index:120;
+    padding:20px;
+  }
+  .overlay.show{display:flex}
+  .modal{
+    width:100%;max-width:520px;background:var(--card);border-radius:14px;padding:20px;box-shadow:0 18px 40px rgba(6,22,50,0.3);
+    transform:translateY(12px);
+    opacity:0;
+    transition:all .28s cubic-bezier(.2,.9,.3,1);
+  }
+  .overlay.show .modal{transform:translateY(0);opacity:1}
+
+  .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .modal-title{font-weight:800;color:#092233}
+  .close-btn{background:transparent;border:0;font-weight:700;color:var(--muted);cursor:pointer;font-size:16px}
+
+  .modal-body{margin-top:8px;color:#243b4a}
+  .modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .btn-tele{background:#0088cc;color:#fff;border:0;padding:12px 16px;border-radius:10px;font-weight:800;cursor:pointer;flex:1}
+  .btn-cancel{background:#eef6ff;color:var(--brand);border:1px solid #d7ebff;padding:12px 16px;border-radius:10px;cursor:pointer;flex:1}
+
+  /* toast */
+  #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;background:#111;color:#fff;padding:10px 14px;border-radius:10px;opacity:0;transition:opacity .2s;z-index:200}
+  #toast.show{opacity:1}
+
+  @media (max-width:520px){
+    .card-row{flex-direction:column;align-items:flex-start}
+    .modal{padding:16px}
+    .modal-actions{flex-direction:column}
+  }
+
+  /* 🔸 Notice Bar Styling */
+  .notice-bar {
+    background: #fff8e1; /* light yellow background */
+    color: #b45f00;      /* warning text color */
+    font-weight: 600;
+    font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 8px 0;
+    margin-bottom: 10px;
+    border-radius: 6px;
+  }
+
+  /* 🔸 Scrolling Text Animation */
+  .notice-bar span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scrollText 18s linear infinite;
+  }
+
+  @keyframes scrollText {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+</style>
+</head>
+<body>
+  <header>BUY BPC CODE</header>
+
+  <main class="page">
+
+    <!-- STEP 1: BUY FORM -->
+    <section id="step-buy" class="panel" aria-labelledby="buy-heading">
+      <h2 id="buy-heading">Buy BPC — <span style="font-size:20px;font-weight:900">₦10,500</span></h2>
+
+      <label for="name">Full name</label>
+      <input id="name" type="text" placeholder="Enter your name">
+
+      <label for="email">Email address</label>
+      <input id="email" type="email" placeholder="you@example.com">
+
+      <div style="margin-top:10px;color:var(--muted);font-size:13px">
+        You can edit name/email — they will be saved locally for next time.
+      </div>
+
+      <button id="payNow" class="btn btn-primary" aria-live="polite">Pay ₦10,500</button>
+    </section>
+
+    <div class="notice-bar">
+  <span>⚠️ Opay network is kinda bad right now — use another bank or message your admin for his bank.</span>
+</div>
+
+
+    <!-- STEP 2: PROCESSING -->
+    <section id="step-processing" class="panel hidden center" aria-live="polite">
+      <h2>Processing your request</h2>
+      <p class="muted">Please wait while we prepare your payment information...</p>
+      <div class="spinner" role="img" aria-hidden="true"></div>
+      <div class="large" id="proc-count">10</div>
+    </section>
+
+    <!-- STEP 3: BANK TRANSFER -->
+    <section id="step-transfer" class="panel hidden" aria-live="polite">
+      <div class="instructions" role="region" aria-label="instructions">
+        <strong style="display:block;margin-bottom:8px;color:#0b283a">Instructions</strong>
+        <ol style="margin:0 0 0 16px;color:#34495e">
+          <li>Copy the account details below</li>
+          <li>Open your bank app and make a transfer for <b>₦10,500</b></li>
+          <li>Return here and click <b>"I have made this bank Transfer"</b></li>
+          <li>Wait for confirmation (usually within 3 minutes)</li>
+        </ol>
+      </div>
+
+      <div class="card-row" aria-label="Bank name">
+        <div class="card-col"><div class="label">Bank Name</div><div class="value" id="bankName">MONIEPOINT</div></div>
+      </div>
+
+      <div class="card-row" aria-label="Account number">
+        <div class="card-col"><div class="label">Account Number</div><div class="value" id="acctNumber">5707009872</div></div>
+        <div><button id="copyBtn" class="copy-btn" aria-label="Copy account number">Copy account</button></div>
+      </div>
+
+      <div class="card-row" aria-label="Account name">
+        <div class="card-col"><div class="label">Account Name</div><div class="value" id="acctName">John Bernard</div></div>
+      </div>
+
+      <div class="card-row" aria-label="Amount">
+        <div class="card-col"><div class="label">Amount</div><div class="value">₦10,500</div></div>
+      </div>
+
+      <div class="card-row" style="flex-direction:column;align-items:flex-start" aria-label="time left">
+        <div class="label" style="margin-bottom:10px">Time left to complete transfer</div>
+        <div class="timer" id="paymentTimer">30:00</div>
+      </div>
+
+      <div style="margin-top:12px">
+        <button id="openModalBtn" class="btn btn-primary" style="width:100%">I have made this bank Transfer</button>
+      </div>
+
+      <div class="note">⚠️ Pay to this specific account and get your BPC code</div>
+    </section>
+
+  </main>
+
+  <!-- Modal (centered) -->
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <div class="modal-title" id="modalTitle">Confirm Payment</div>
+        <button class="close-btn" id="modalClose" title="Close">✕</button>
+      </div>
+
+      <div class="modal-body" id="modalBody">
+        <p style="margin:0 0 10px">Thanks — we received your intent to pay. Please click the button below to open the chat and share your payment reference. Our support will confirm once they receive the transfer (usually within 3 minutes).</p>
+
+        <div style="margin-top:12px;font-weight:800">Order: <span id="orderRef">BPC-10,500-<span id="shortRef">XXXX</span></span></div>
+
+        <div class="modal-actions">
+          <button id="chatTelegram" class="btn-tele">Chat on Telegram</button>
+          <button id="cancelModal" class="btn-cancel">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  // CONFIG
+  const TELEGRAM_URL = 'https://t.me/bpc_customer_care';
+  const ACCOUNT_NUMBER = '5707009872';
+  const ACCOUNT_NAME = 'John Bernard';
+  const BANK_NAME = 'MONIEPOINT';
+  const AMOUNT = '₦10,500';
+
+  // ELEMENTS
+  const stepBuy = document.getElementById('step-buy');
+  const stepProcessing = document.getElementById('step-processing');
+  const stepTransfer = document.getElementById('step-transfer');
+  const payNowBtn = document.getElementById('payNow');
+
+  const nameInp = document.getElementById('name');
+  const emailInp = document.getElementById('email');
+
+  const procCountEl = document.getElementById('proc-count');
+
+  const bankNameEl = document.getElementById('bankName');
+  const acctNumberEl = document.getElementById('acctNumber');
+  const acctNameEl = document.getElementById('acctName');
+  const copyBtn = document.getElementById('copyBtn');
+
+  const paymentTimerEl = document.getElementById('paymentTimer');
+  const openModalBtn = document.getElementById('openModalBtn');
+
+  const overlay = document.getElementById('overlay');
+  const modalClose = document.getElementById('modalClose');
+  const cancelModal = document.getElementById('cancelModal');
+  const chatTelegram = document.getElementById('chatTelegram');
+  const orderRef = document.getElementById('orderRef');
+  const shortRef = document.getElementById('shortRef');
+
+  const toast = document.getElementById('toast');
+
+  // helpers
+  function showToast(text){
+    toast.textContent = text;
+    toast.classList.add('show');
+    toast.style.opacity = '1';
+    setTimeout(()=> { toast.style.opacity = '0'; }, 1400);
+  }
+
+  function safeCopy(text){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise((resolve, reject) => {
+      try{
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position='fixed'; ta.style.left='-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        resolve();
+      }catch(e){ reject(e) }
+    });
+  }
+
+  function getRandomRef(){
+    const s = Math.random().toString(36).slice(2,8).toUpperCase();
+    return `BPC-${Date.now().toString().slice(-5)}-${s}`;
+  }
+
+  // init content
+  bankNameEl.textContent = BANK_NAME;
+  acctNumberEl.textContent = ACCOUNT_NUMBER;
+  acctNameEl.textContent = ACCOUNT_NAME;
+
+  // AUTOFILL: try to pull name/email from localStorage keys if present
+  (function autofill(){
+    const nameKeys = ['username','userName','bpc_username','name','fullName'];
+    const emailKeys = ['useremail','userEmail','email','bpc_useremail'];
+    for(const k of nameKeys){
+      if(localStorage.getItem(k)){ nameInp.value = localStorage.getItem(k); break; }
+    }
+    for(const k of emailKeys){
+      if(localStorage.getItem(k)){ emailInp.value = localStorage.getItem(k); break; }
+    }
+  })();
+
+  // Save canonical keys on Pay
+  function saveUser(name, email){
+    try{
+      localStorage.setItem('username', name);
+      localStorage.setItem('useremail', email);
+    }catch(e){}
+  }
+
+  // FLOW: Pay -> Processing -> Transfer
+  payNowBtn.addEventListener('click', () => {
+    const name = nameInp.value.trim();
+    const email = emailInp.value.trim();
+    if(!name || !email){
+      alert('Please enter your name and email before continuing.');
+      return;
+    }
+    saveUser(name, email);
+
+    // show processing
+    stepBuy.classList.add('hidden');
+    stepProcessing.classList.remove('hidden');
+
+    // 10s countdown
+    let t = 10;
+    procCountEl.textContent = t;
+    const procInt = setInterval(()=>{
+      t--; procCountEl.textContent = t;
+      if(t <= 0){
+        clearInterval(procInt);
+        stepProcessing.classList.add('hidden');
+        stepTransfer.classList.remove('hidden');
+        startPaymentTimer(30 * 60);
+      }
+    }, 1000);
+  });
+
+  // copy handler
+  copyBtn.addEventListener('click', () => {
+    safeCopy(ACCOUNT_NUMBER)
+      .then(()=> showToast('Account number copied'))
+      .catch(()=> alert('Copy failed — try using a browser or long-press to select the number'));
+  });
+
+  // payment timer
+  let paymentInt = null;
+  function startPaymentTimer(seconds){
+    if(paymentInt) clearInterval(paymentInt);
+    let sec = seconds;
+    function tick(){
+      const mm = String(Math.floor(sec/60)).padStart(2,'0');
+      const ss = String(sec % 60).padStart(2,'0');
+      paymentTimerEl.textContent = `${mm}:${ss}`;
+      if(sec <= 0){
+        clearInterval(paymentInt);
+        paymentTimerEl.textContent = '00:00';
+        openModalBtn.disabled = true;
+        openModalBtn.textContent = 'Payment window expired';
+        showToast('Payment window expired');
+      }
+      sec--;
+    }
+    tick();
+    paymentInt = setInterval(tick, 1000);
+  }
+
+  // Modal handling: open / close
+  openModalBtn.addEventListener('click', () => {
+    // create unique order ref shown in modal
+    const ref = getRandomRef();
+    shortRef.textContent = ref.slice(-6);
+    orderRef.textContent = ref;
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden','false');
+    // focus for accessibility
+    chatTelegram.focus();
+  });
+
+  function closeModal(){
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden','true');
+  }
+  modalClose.addEventListener('click', closeModal);
+  cancelModal.addEventListener('click', closeModal);
+
+  // Chat on Telegram button inside modal
+  chatTelegram.addEventListener('click', () => {
+    // We open telegram in new tab/window so user can return if needed
+    window.open(TELEGRAM_URL, '_blank', 'noopener');
+    // show small feedback then close modal
+    showToast('Opening Telegram...');
+    setTimeout(closeModal, 700);
+  });
+
+  // keyboard escape closes modal
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && overlay.classList.contains('show')) closeModal();
+  });
+
+  // init toast element style class toggle
+  (function initToast(){
+    toast.style.opacity = '0';
+  })();
+
+})();
+</script>
+</body>
+</html>
