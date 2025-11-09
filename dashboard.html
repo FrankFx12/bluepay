@@ -103,8 +103,22 @@
     .balance-card {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;}
+  align-items: center; /* Center vertically */
+  flex-wrap: nowrap;   /* Prevent button from wrapping to next line */
+}
+
+@media (max-width: 500px) {
+  .balance-card {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .withdraw-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
 
     .balance-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
     .balance-left{}
