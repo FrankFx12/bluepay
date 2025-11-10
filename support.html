@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support | BLUEPAY</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f5f6fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .support-container {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 420px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .support-container h1 {
+      color: #0047FF;
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .support-container p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .input-field:focus {
+      border-color: #0047FF;
+      box-shadow: 0 0 5px rgba(0, 71, 255, 0.2);
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    .send-btn {
+      width: 100%;
+      background: #0047FF;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .send-btn:hover {
+      background: #0036c7;
+    }
+
+    .support-icon {
+      font-size: 45px;
+      color: #0047FF;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #888;
+    }
+
+    @media (max-width: 480px) {
+      .support-container {
+        padding: 18px;
+      }
+
+      .support-container h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="support-container">
+    <i class="fa-solid fa-headset support-icon"></i>
+    <h1>BLUEPAY Support</h1>
+    <p>Need help? Send us an email below 👇</p>
+
+    <input type="text" id="name" class="input-field" placeholder="Your Name" required>
+    <input type="email" id="email" class="input-field" placeholder="Your Email" required>
+    <textarea id="message" class="input-field" placeholder="Type your message..." required></textarea>
+
+    <button class="send-btn" onclick="sendEmail()">Send Message</button>
+  </div>
+
+  <footer>© 2025 BLUEPAY • Support Center</footer>
+
+  <script>
+    function sendEmail() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      if (!name || !email || !message) {
+        alert("Please fill in all fields before sending.");
+        return;
+      }
+
+      const subject = encodeURIComponent("BLUEPAY Support Request from " + name);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+      const mailtoLink = `mailto:marouzezi14@gmail.com?subject=${subject}&body=${body}`;
+
+      window.location.href = mailtoLink;
+    }
+  </script>
+
+</body>
+</html>
