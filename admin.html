@@ -2,131 +2,168 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>BluePay Admin</title>
+<title>BLUEPAY Admin Panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 *{box-sizing:border-box;font-family:Poppins,Arial}
-body{
-  margin:0;
-  background:#f5f6fa;
-  color:#111;
-}
-.header{
-  background:#111;
-  color:#fff;
-  padding:15px;
-  text-align:center;
-  font-size:18px;
-  font-weight:800;
-}
-.wrapper{
-  max-width:700px;
-  margin:auto;
-  padding:15px;
-}
-.card{
+body{margin:0;background:#f5f6fa}
+
+/* LOGIN */
+#loginBox{
+  max-width:400px;
+  margin:80px auto;
   background:#fff;
-  border-radius:14px;
-  padding:15px;
-  box-shadow:0 6px 18px rgba(0,0,0,.08);
-  margin-bottom:15px;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.1)
 }
-.req{
-  border-bottom:1px solid #eee;
-  padding:10px 0;
+#loginBox h2{text-align:center}
+#loginBox input,#loginBox button{
+  width:100%;padding:12px;margin:10px 0;border-radius:8px
 }
-.req:last-child{border:none}
-.status{
-  font-weight:700;
+#loginBox input{border:1px solid #ddd}
+#loginBox button{
+  background:#0047ff;color:#fff;border:none;font-weight:700
 }
-.pending{color:#f59e0b}
-.approved{color:#22c55e}
-.rejected{color:#ef4444}
-.btn{
-  padding:8px 14px;
-  border:none;
-  border-radius:8px;
-  font-weight:700;
-  cursor:pointer;
-  margin-right:8px;
+
+/* PANEL */
+#panel{display:none;padding:20px;max-width:1100px;margin:auto}
+header{
+  display:flex;justify-content:space-between;align-items:center
 }
-.approve{background:#22c55e;color:#fff}
-.reject{background:#ef4444;color:#fff}
+header h1{color:#0047ff}
+.logout{background:#e74c3c;color:#fff;border:none;padding:10px 16px;border-radius:8px}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin:20px 0}
+.card{
+  background:#fff;padding:18px;border-radius:12px;
+  box-shadow:0 5px 20px rgba(0,0,0,.05)
+}
+.card h3{margin:0;font-size:14px;color:#555}
+.card p{font-size:22px;font-weight:800}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}
+th,td{padding:12px;border-bottom:1px solid #eee;text-align:left}
+th{background:#0047ff;color:#fff}
+.status{font-weight:700}
+.pending{color:#f39c12}
+.approved{color:#27ae60}
+.rejected{color:#e74c3c}
+
+button.action{
+  padding:6px 10px;border:none;border-radius:6px;color:#fff;cursor:pointer
+}
+.approve{background:#27ae60}
+.reject{background:#e74c3c}
+
+footer{text-align:center;color:#777;margin:20px 0}
 </style>
 </head>
 
 <body>
 
-<div class="header">BLUEPAY ADMIN PANEL</div>
+<!-- LOGIN -->
+<div id="loginBox">
+  <h2>Admin Login</h2>
+  <input id="email" placeholder="Admin Email">
+  <input id="pin" type="password" placeholder="Admin PIN">
+  <button onclick="login()">Login</button>
+</div>
 
-<div class="wrapper">
-  <div class="card">
-    <h3>Withdrawal Requests</h3>
-    <div id="list"></div>
-  </div>
+<!-- PANEL -->
+<div id="panel">
+<header>
+  <h1>BLUEPAY Admin</h1>
+  <button class="logout" onclick="logout()">Logout</button>
+</header>
+
+<!-- ANALYTICS -->
+<div class="cards">
+  <div class="card"><h3>Total Requests</h3><p id="tReq">0</p></div>
+  <div class="card"><h3>Pending</h3><p id="pReq">0</p></div>
+  <div class="card"><h3>Approved</h3><p id="aReq">0</p></div>
+  <div class="card"><h3>Total Paid (₦)</h3><p id="tPaid">0</p></div>
+</div>
+
+<!-- TABLE -->
+<table>
+<thead>
+<tr>
+<th>User</th>
+<th>Email</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="rows"></tbody>
+</table>
+
+<footer>BLUEPAY © Admin Control Panel</footer>
 </div>
 
 <script>
-/*
-EXPECTED STRUCTURE FROM withdraw.html
+const ADMIN_EMAIL="marouzezi14@gmail.com";
+const ADMIN_PIN="2468";
 
-localStorage.setItem("withdrawals", JSON.stringify([
- {
-   id: 1,
-   email: "user@gmail.com",
-   amount: 50000,
-   status: "PENDING"
- }
-]));
-*/
+function login(){
+  if(email.value===ADMIN_EMAIL && pin.value===ADMIN_PIN){
+    localStorage.admin="yes";location.reload();
+  }else alert("Access denied");
+}
+function logout(){localStorage.removeItem("admin");location.reload();}
+if(localStorage.admin==="yes"){
+  loginBox.style.display="none";
+  panel.style.display="block";
+}
 
-let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-const list = document.getElementById("list");
+/* DEMO DATA (comes from withdrawals page normally) */
+let withdrawals=JSON.parse(localStorage.getItem("withdrawals"))||[
+ {user:"John",email:"john@gmail.com",amount:100000,status:"PENDING"},
+ {user:"Blessing",email:"bless@gmail.com",amount:50000,status:"PENDING"}
+];
 
 function render(){
-  list.innerHTML = "";
-
-  if(withdrawals.length === 0){
-    list.innerHTML = "<p>No withdrawal requests</p>";
-    return;
-  }
+  rows.innerHTML="";
+  let approved=0,pending=0,paid=0;
 
   withdrawals.forEach((w,i)=>{
-    list.innerHTML += `
-      <div class="req">
-        <p><b>Email:</b> ${w.email}</p>
-        <p><b>Amount:</b> ₦${Number(w.amount).toLocaleString()}</p>
-        <p class="status ${w.status.toLowerCase()}">
-          Status: ${w.status}
-        </p>
+    if(w.status==="APPROVED"){approved++;paid+=w.amount}
+    if(w.status==="PENDING")pending++;
 
-        ${
-          w.status === "PENDING"
-          ? `
-            <button class="btn approve" onclick="approve(${i})">PAID</button>
-            <button class="btn reject" onclick="reject(${i})">REJECT</button>
-          `
-          : ""
-        }
-      </div>
-    `;
+    rows.innerHTML+=`
+    <tr>
+      <td>${w.user}</td>
+      <td>${w.email}</td>
+      <td>₦${w.amount.toLocaleString()}</td>
+      <td class="status ${w.status.toLowerCase()}">${w.status}</td>
+      <td>
+        ${w.status==="PENDING"?
+        `<button class="action approve" onclick="approve(${i})">PAID</button>
+         <button class="action reject" onclick="reject(${i})">Reject</button>`
+        :"-"}
+      </td>
+    </tr>`;
   });
+
+  tReq.innerText=withdrawals.length;
+  pReq.innerText=pending;
+  aReq.innerText=approved;
+  tPaid.innerText=paid.toLocaleString();
+
+  localStorage.setItem("withdrawals",JSON.stringify(withdrawals));
 }
 
-function approve(index){
-  withdrawals[index].status = "APPROVED";
-  save();
-  alert("Payment approved");
+function approve(i){
+  withdrawals[i].status="APPROVED";
+  alert("Payment approved (email can be sent here)");
+  render();
 }
-
-function reject(index){
-  withdrawals[index].status = "REJECTED";
-  save();
-}
-
-function save(){
-  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+function reject(i){
+  withdrawals[i].status="REJECTED";
   render();
 }
 
