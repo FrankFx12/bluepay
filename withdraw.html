@@ -329,6 +329,18 @@
   });
 
 })();
+
+let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+
+withdrawals.push({
+  id: Date.now(),
+  email: userEmail,     // from login
+  amount: withdrawAmount,
+  status: "PENDING"
+});
+
+localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
 </script>
 </body>
 </html>

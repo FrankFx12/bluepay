@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BluePay Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box;font-family:Poppins,Arial}
+body{
+  margin:0;
+  background:#f5f6fa;
+  color:#111;
+}
+.header{
+  background:#111;
+  color:#fff;
+  padding:15px;
+  text-align:center;
+  font-size:18px;
+  font-weight:800;
+}
+.wrapper{
+  max-width:700px;
+  margin:auto;
+  padding:15px;
+}
+.card{
+  background:#fff;
+  border-radius:14px;
+  padding:15px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+  margin-bottom:15px;
+}
+.req{
+  border-bottom:1px solid #eee;
+  padding:10px 0;
+}
+.req:last-child{border:none}
+.status{
+  font-weight:700;
+}
+.pending{color:#f59e0b}
+.approved{color:#22c55e}
+.rejected{color:#ef4444}
+.btn{
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  font-weight:700;
+  cursor:pointer;
+  margin-right:8px;
+}
+.approve{background:#22c55e;color:#fff}
+.reject{background:#ef4444;color:#fff}
+</style>
+</head>
+
+<body>
+
+<div class="header">BLUEPAY ADMIN PANEL</div>
+
+<div class="wrapper">
+  <div class="card">
+    <h3>Withdrawal Requests</h3>
+    <div id="list"></div>
+  </div>
+</div>
+
+<script>
+/*
+EXPECTED STRUCTURE FROM withdraw.html
+
+localStorage.setItem("withdrawals", JSON.stringify([
+ {
+   id: 1,
+   email: "user@gmail.com",
+   amount: 50000,
+   status: "PENDING"
+ }
+]));
+*/
+
+let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+const list = document.getElementById("list");
+
+function render(){
+  list.innerHTML = "";
+
+  if(withdrawals.length === 0){
+    list.innerHTML = "<p>No withdrawal requests</p>";
+    return;
+  }
+
+  withdrawals.forEach((w,i)=>{
+    list.innerHTML += `
+      <div class="req">
+        <p><b>Email:</b> ${w.email}</p>
+        <p><b>Amount:</b> ₦${Number(w.amount).toLocaleString()}</p>
+        <p class="status ${w.status.toLowerCase()}">
+          Status: ${w.status}
+        </p>
+
+        ${
+          w.status === "PENDING"
+          ? `
+            <button class="btn approve" onclick="approve(${i})">PAID</button>
+            <button class="btn reject" onclick="reject(${i})">REJECT</button>
+          `
+          : ""
+        }
+      </div>
+    `;
+  });
+}
+
+function approve(index){
+  withdrawals[index].status = "APPROVED";
+  save();
+  alert("Payment approved");
+}
+
+function reject(index){
+  withdrawals[index].status = "REJECTED";
+  save();
+}
+
+function save(){
+  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+  render();
+}
+
+render();
+</script>
+
+</body>
+</html>
