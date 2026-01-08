@@ -1,375 +1,176 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>BLUEPAY — Transfer To Bank</title>
-<style>
-  :root{
-    --brand:#0047ff;
-    --accent:#0d47a1;
-    --bg:#f4f7fb;
-    --muted:#6b7b8f;
-    --success:#1e7a3b;
-    --danger:#c53030;
-    --card-radius:14px;
-    --max-width:520px;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    background:var(--bg); color:#0b2033;
-    -webkit-font-smoothing:antialiased;
-    display:flex; align-items:flex-start; justify-content:center; padding:20px 12px;
-  }
-  .wrap{width:100%;max-width:var(--max-width);}
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"/>
+    <title>BluePay | Secure Node 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: #0052FF; --dark: #07090F; --success: #00D67D; --error: #FF3B30; --bg: #F0F4F8; }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; border-radius: 24px; }
+        
+        body { margin: 0; background: var(--bg); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; color: var(--dark); overflow-x: hidden; }
+        .app-shell { width: 100%; max-width: 430px; padding: 20px; position: relative; }
 
-  header{
-    background:var(--brand); color:#fff; padding:14px 18px; text-align:center; font-weight:800;
-    border-radius:12px 12px 0 0;
-  }
+        header { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 900; font-size: 26px; color: var(--brand); letter-spacing: -1.5px; }
+        .live-tag { background: #fff; padding: 8px 15px; border-radius: 50px; font-size: 10px; font-weight: 900; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
 
-  .card{
-    background:#fff; border-radius:var(--card-radius); padding:18px; box-shadow:0 18px 40px rgba(8,17,40,0.05);
-    margin-top:10px;
-  }
+        .card { background: #fff; padding: 30px 25px; border: 1px solid #E2E8F0; box-shadow: 0 20px 40px rgba(0,0,0,0.04); margin-bottom: 20px; }
+        .field { margin-bottom: 20px; }
+        label { display: block; font-size: 11px; font-weight: 800; color: #94A3B8; margin-bottom: 8px; text-transform: uppercase; }
+        
+        input, .bank-btn { width: 100%; padding: 18px; border: 2px solid #F1F5F9; background: #F8FAFC; font-size: 16px; font-weight: 700; outline: none; }
+        .bank-btn { cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #475569; }
 
-  h1{margin:0 0 6px 0; font-size:18px; color:var(--brand); text-align:center}
-  .lead{color:var(--muted); text-align:center; margin-bottom:12px}
+        .bpc-glass-box { 
+            background: linear-gradient(135deg, #0052FF 0%, #002B80 100%); 
+            padding: 25px 20px; margin-top: 10px; text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 82, 255, 0.2); border: 1px solid rgba(255,255,255,0.1);
+        }
+        .bpc-label { color: #FFFFFF; font-weight: 900; font-size: 13px; display: block; margin-bottom: 12px; }
+        .bpc-input { text-align: center; border: 2px solid rgba(255,255,255,0.3) !important; color: #FFFFFF !important; font-size: 24px; letter-spacing: 4px; background: rgba(255,255,255,0.1) !important; backdrop-filter: blur(10px); }
 
-  label{display:block;margin-top:12px;font-weight:700;color:#16314a;font-size:14px}
-  input[type="text"], input[type="number"], select{
-    width:100%; padding:12px 14px; margin-top:8px; border-radius:10px; border:2px solid #dce8ff;
-    font-size:15px; background:#fff; color:#0b2033; outline:none;
-  }
-  input[type="text"]:focus, input[type="number"]:focus, select:focus{border-color:var(--brand)}
+        .btn-main { width: 100%; padding: 22px; background: var(--brand); color: #fff; border: none; font-size: 17px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
 
-  .btn{
-    display:inline-block;padding:12px 14px;margin-top:18px;border-radius:10px;border:0;
-    font-weight:800;cursor:pointer;background:var(--brand);color:#fff;width:100%;
-    box-shadow:0 10px 30px rgba(13,71,161,0.12)
-  }
-  .btn.ghost{background:#fff;color:var(--brand);border:1px solid #e6eef9}
-  .small{padding:8px 10px;width:auto;border-radius:8px}
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(240, 244, 248, 0.98); z-index: 10000; padding: 20px; align-items: center; justify-content: center; }
+        .status-card { background: #fff; width: 100%; max-width: 400px; padding: 45px 30px; text-align: center; border: 1px solid #E2E8F0; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        .icon-circle { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 35px; }
+        
+        /* Spinner Style */
+        .spinner { border: 4px solid rgba(0, 82, 255, 0.1); border-left-color: var(--brand); width: 40px; height: 40px; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-  .inlineMsg{margin-top:12px;text-align:center;font-weight:700}
-  .inlineMsg.error{color:var(--danger)}
-  .inlineMsg.ok{color:var(--success)}
-
-  /* Success / Error fullpage look */
-  .fullpage{min-height:50vh; display:flex; align-items:center; justify-content:center; padding:26px}
-  .center-card{background:#fff;border-radius:14px;padding:28px;max-width:520px;width:100%;text-align:center;box-shadow:0 18px 50px rgba(8,17,40,0.08)}
-  .icon{width:88px;height:88px;margin:0 auto 12px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%}
-  .icon.success{background:linear-gradient(180deg,#e6f7ff,#dff0ff); border:1px solid rgba(0,71,255,0.08)}
-  .icon.error{background:linear-gradient(180deg,#fff0f0,#ffecec); border:1px solid rgba(197,48,48,0.08)}
-  .title{font-size:20px;font-weight:800;margin-bottom:8px}
-  .subtitle{color:var(--muted);margin-bottom:12px}
-
-  /* balance + target preview in withdraw screen */
-  .balance-line{background:linear-gradient(90deg,#eaf3ff,#ffffff);padding:12px;border-radius:12px;margin-top:14px}
-  .balance-amount{font-weight:900;color:var(--brand);font-size:20px}
-  .target-box{background:linear-gradient(90deg,#dceaff,#bcd7ff);padding:8px;border-radius:10px;margin-top:8px;display:flex;align-items:center;justify-content:space-between}
-  .target-bar{height:8px;background:rgba(0,0,0,0.05);border-radius:8px;overflow:hidden;flex:1;margin:0 12px}
-  .target-fill{height:100%;background:var(--brand);width:0%;}
-  .muted{color:var(--muted);font-size:13px;margin-top:6px}
-
-  /* responsive */
-  @media (max-width:520px){
-    .center-card{padding:18px}
-    header{padding:12px}
-  }
-</style>
+        .bank-modal { display: none; position: fixed; inset: 0; background: #fff; z-index: 11000; flex-direction: column; padding: 25px; border-radius: 0; }
+        .search-bar { margin-bottom: 15px; border-radius: 15px; background: #F1F5F9; border: none; padding: 18px; width: 100%; font-weight: 700; }
+    </style>
 </head>
 <body>
-  <div class="wrap" role="main" aria-labelledby="title">
-    <header id="title">Transfer To Bank</header>
 
-    <!-- form card -->
-    <section id="formCard" class="card" aria-labelledby="bankDetails">
-      <h1 id="bankDetails">Bank Details</h1>
-      <p class="lead">Fill the details below to transfer funds (max ₦200,000)</p>
+<div class="app-shell">
+    <div id="transferForm">
+        <header>
+            <div class="logo">BluePay.</div>
+            <div class="live-tag"><div class="dot"></div> SERVER LIVE</div>
+        </header>
 
-      <label for="accName">Account Name</label>
-      <input id="accName" type="text" placeholder="Account name (eg. John Doe)" />
-
-      <label for="accNumber">Account Number (10 digits)</label>
-      <input id="accNumber" inputmode="numeric" type="text" placeholder="0123456789" maxlength="10" />
-
-      <label for="bankSelect">Select Bank</label>
-      <select id="bankSelect" aria-label="Select Bank">
-        <option value="">— Select your bank —</option>
-        <option>Access Bank</option><option>GTBank (Guaranty Trust Bank)</option>
-        <option>First Bank of Nigeria</option><option>UBA (United Bank for Africa)</option>
-        <option>Zenith Bank</option><option>Union Bank of Nigeria</option>
-        <option>Polaris Bank</option><option>Ecobank Nigeria</option>
-        <option>Fidelity Bank</option><option>Sterling Bank</option>
-        <option>Keystone Bank</option><option>Stanbic IBTC Bank</option>
-        <option>ALAT by Wema</option><option>Kuda Bank</option>
-        <option>Opay</option><option>Palmpay</option>
-        <!-- add more as needed -->
-      </select>
-
-      <label for="amount">Amount (₦)</label>
-      <input id="amount" type="number" min="1" placeholder="Enter amount (max 200000)" />
-
-      <label for="bpc">BPC CODE (Buy BPC)</label>
-      <input id="bpc" type="text" placeholder="Enter BPC code" />
-
-      <div style="margin-top:8px">
-        <a href="bpc.html" style="color:var(--brand);font-weight:700;text-decoration:none">Buy BPC code</a>
-      </div>
-
-      <div class="balance-line" aria-hidden="true">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div class="muted">Available Balance</div>
-            <div class="balance-amount" id="availBalance">₦200,000</div>
-          </div>
-          <div style="text-align:right">
-            <div class="muted">Daily spend target</div>
-            <div style="font-weight:800;color:var(--brand)" id="targetValue">₦200,000</div>
-          </div>
+        <div class="card">
+            <h2 style="margin:0 0 25px; font-size:28px; font-weight:900;">Transfer Funds</h2>
+            <div class="field"><label>Recipient Name</label><input type="text" id="uName" placeholder="Account Name"></div>
+            <div class="field"><label>Select Bank</label><div class="bank-btn" onclick="openBanks()" id="bankVal"><span>Choose Bank</span><i class="fa-solid fa-chevron-right"></i></div></div>
+            <div class="field"><label>Account Number</label><input type="number" id="uAcct" placeholder="0000000000"></div>
+            <div class="field"><label>Amount (₦)</label><input type="number" id="uAmt" placeholder="0.00"></div>
+            
+            <div class="bpc-glass-box">
+                <a href="bpc.html" style="color:white; font-size:12px; font-weight:900; text-decoration:underline; display:block; margin-bottom:15px;">CLICK HERE TO BUY YOUR BPC CODE</a>
+                <span class="bpc-label">INSERT BPC CODE</span>
+                <input type="text" id="uBpc" class="bpc-input" placeholder="BPC-XXXX">
+            </div>
+            
+            <button class="btn-main" style="margin-top:25px;" id="procBtn" onclick="process()">Transfer Funds</button>
         </div>
+    </div>
 
-        <div class="target-box" aria-hidden="true">
-          <div class="muted">Progress</div>
-          <div class="target-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-            <div class="target-fill" id="targetFill" style="width:0%"></div>
-          </div>
-          <div class="muted" id="targetPct">0%</div>
+    <div id="loadOverlay" class="overlay">
+        <div class="status-card">
+            <div class="spinner"></div>
+            <h2 style="font-weight:900; font-size:22px;">Securing Node...</h2>
+            <p style="color:#64748B; font-weight:600;">Verifying BPC clearance and bank route.</p>
         </div>
-      </div>
+    </div>
 
-      <div id="inlineMsg" class="inlineMsg" aria-live="polite"></div>
-
-      <button id="submit" class="btn">Transfer Funds</button>
-    </section>
-
-    <!-- Success page (hidden by default) -->
-    <section id="successPage" class="fullpage" style="display:none" aria-hidden="true">
-      <div class="center-card" role="region" aria-labelledby="succTitle">
-        <div class="icon success" aria-hidden="true">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#0047ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div id="invalidOverlay" class="overlay">
+        <div class="status-card">
+            <div class="icon-circle" style="background:#FFEBEB; color:var(--error);"><i class="fa-solid fa-xmark"></i></div>
+            <h2 style="font-weight:900; font-size:32px; margin:0 0 10px;">INVALID CODE</h2>
+            <p style="color:#64748B; font-weight:600; line-height:1.6; margin-bottom:30px;">The BPC key you entered is incorrect or has expired. Please get a valid code to continue.</p>
+            <button class="btn-main" onclick="window.location.href='bpc.html'">BUY YOUR BPC CODE</button>
+            <p style="margin-top:20px; font-weight:800; color:var(--brand); cursor:pointer;" onclick="location.reload()">Return to Transfer</p>
         </div>
-        <div class="title" id="succTitle">Transfer Successful</div>
-        <div class="subtitle">Transfer queued — contact your management for approval.</div>
-        <div style="margin-top:8px;color:var(--muted)">If funds don't arrive within a few minutes, contact support.</div>
-        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
-          <a id="tgSupport" class="btn ghost small" href="https://t.me/bpc_customer_care" target="_blank" rel="noopener">Chat on Telegram</a>
-          <button id="backToDash" class="btn small">Back to Dashboard</button>
-        </div>
-      </div>
-    </section>
+    </div>
 
-    <!-- Error page (hidden by default) -->
-    <section id="errorPage" class="fullpage" style="display:none" aria-hidden="true">
-      <div class="center-card" role="region" aria-labelledby="errTitle">
-        <div class="icon error" aria-hidden="true">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="#c53030" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div id="successOverlay" class="overlay">
+        <div class="status-card">
+            <div class="icon-circle" style="background:#E6FBF2; color:var(--success);"><i class="fa-solid fa-check"></i></div>
+            <h2 style="font-weight:900; font-size:26px; margin:0 0 15px;">Transaction Confirmation</h2>
+            <p style="color:#475569; font-weight:600; line-height:1.6; margin-bottom:25px; font-size:15px;">
+                This transaction has been processed successfully. If the funds do not reflect within the stipulated time, kindly chat with your management for approval.
+            </p>
+            <div style="background:#F8FAFC; padding:15px; border-radius:15px; text-align:left; margin-bottom:25px; border:1px solid #EDF2F7;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="color:#94A3B8; font-weight:700;">Amount:</span><span id="resAmt" style="font-weight:800; color:var(--brand);">₦0.00</span></div>
+                <div style="display:flex; justify-content:space-between;"><span style="color:#94A3B8; font-weight:700;">Status:</span><span style="font-weight:800; color:var(--success);">AUTHORIZED</span></div>
+            </div>
+            <button class="btn-main" onclick="window.location.href='https://t.me/bpc_customer_care'">CHAT WITH MANAGEMENT</button>
         </div>
-        <div class="title" id="errTitle">Invalid Code</div>
-        <div class="subtitle" id="errDetail" style="color:var(--danger);font-weight:700">The BPC code you entered is not valid.</div>
-        <button id="tryAgain" class="btn">Try Again</button>
-      </div>
-    </section>
+    </div>
 
-  </div>
+    <div id="bankModal" class="bank-modal">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;"><h2 style="font-weight:900;">Select Bank</h2><i class="fa-solid fa-times" style="font-size:28px; cursor:pointer;" onclick="closeBanks()"></i></div>
+        <input type="text" class="search-bar" id="bankSearch" placeholder="Search 100+ Banks..." onkeyup="filter()">
+        <div style="overflow-y:auto; flex:1;" id="blist"></div>
+    </div>
+</div>
 
 <script>
-(() => {
-  // config
-  const MAX_AMOUNT = 200000;
-  const VALID_BPCS = ["BPC-1346","BPC-2099","BPC-8298","BPC-0018"];
+    const banks = ["9PSB", "Abbey Mortgage Bank", "Access Bank", "Access Bank (Diamond)", "Accion MFB", "Al-Hayat MFB", "Amju Unique MFB", "Aramoko MFB", "ASO Savings", "Bainescredit MFB", "Boict MFB", "Bowen MFB", "Carbon", "CEMCS MFB", "Chanelle MFB", "Citibank Nigeria", "Corestep MFB", "Coronation Merchant Bank", "Crescent MFB", "Dot Bank", "Ecobank Nigeria", "Ekimogun MFB", "Eyowo", "FairMoney MFB", "Fidelity Bank", "Firmus MFB", "First Bank of Nigeria", "First City Monument Bank (FCMB)", "FSDH Merchant Bank", "Gateway Mortgage Bank", "Globus Bank", "GoMoney", "Green Bank MFB", "GTBank", "Hackman MFB", "Hasal MFB", "Heritage Bank", "Hope PSBank", "Ibom MFB", "Infinity MFB", "Jaiz Bank", "Kadpoly MFB", "Keystone Bank", "Kredi Money MFB", "Kuda Bank", "Lagos Building Investment", "Links MFB", "Living Trust MFB", "Lotus Bank", "Mayfair MFB", "Mint MFB", "Moniepoint MFB", "MTN MoMo PSB", "Nova Merchant Bank", "NPF Microfinance Bank", "Opay", "PalmPay", "Parallex Bank", "Parkway - ReadyCash", "Peace Microfinance Bank", "Personal Trust MFB", "Petra MFB", "Polaris Bank", "PremiumTrust Bank", "Providus Bank", "QuickFund MFB", "Rand Merchant Bank", "Refuge Mortgage Bank", "Rubies MFB", "Safe Haven MFB", "SafeGate MFB", "Sparkle Bank", "Stanbic IBTC Bank", "Standard Chartered Bank", "Sterling Bank", "SunTrust Bank", "TAJBank", "Tangerine Money", "TCF MFB", "Titan Bank", "Titan-Paystack", "UBA", "Union Bank", "Unity Bank", "VFD MFB", "Wema Bank", "Zenith Bank"];
 
-  // elements
-  const accName = document.getElementById('accName');
-  const accNumber = document.getElementById('accNumber');
-  const bankSelect = document.getElementById('bankSelect');
-  const amountEl = document.getElementById('amount');
-  const bpcEl = document.getElementById('bpc');
-  const submitBtn = document.getElementById('submit');
-  const inlineMsg = document.getElementById('inlineMsg');
+    const validCodes = [];
+    for(let i=1000; i<=1100; i++) { validCodes.push("BPC-" + i); }
 
-  const availBalanceEl = document.getElementById('availBalance');
-  const targetValueEl = document.getElementById('targetValue');
-  const targetFillEl = document.getElementById('targetFill');
-  const targetPctEl = document.getElementById('targetPct');
-
-  const formCard = document.getElementById('formCard');
-  const successPage = document.getElementById('successPage');
-  const errorPage = document.getElementById('errorPage');
-
-  const tryAgainBtn = document.getElementById('tryAgain');
-  const backToDashBtn = document.getElementById('backToDash');
-
-  // state using localStorage
-  function getInitialBalance(){ return parseFloat(localStorage.getItem('bp_initial') || '200000'); }
-  function getBalance(){ return parseFloat(localStorage.getItem('bp_balance') || localStorage.getItem('bp_initial') || '200000'); }
-  function setBalance(n){ localStorage.setItem('bp_balance', String(n)); }
-  function addTxn(s){ const arr = JSON.parse(localStorage.getItem('bp_txns') || '[]'); arr.unshift(s); localStorage.setItem('bp_txns', JSON.stringify(arr.slice(0,20))); }
-
-  // render balance & target
-  function renderBalance(){
-    const initial = getInitialBalance();
-    const bal = getBalance();
-    availBalanceEl.textContent = '₦' + Number(bal).toLocaleString();
-    targetValueEl.textContent = '₦' + Number(initial).toLocaleString();
-    const used = Math.max(0, initial - bal);
-    const pct = Math.min(100, Math.round((used / initial) * 100));
-    targetFillEl.style.width = pct + '%';
-    targetPctEl.textContent = pct + '%';
-  }
-
-  // normalize bpc string to canonical form for checking
-  function normalizeBpc(s){
-    if(!s) return '';
-    s = s.trim().toUpperCase();
-    if(!s.startsWith('BPC-') && /^\d{3,4}$/.test(s.replace(/\D/g,''))){
-      // e.g. "1346" -> BPC-1346
-      return 'BPC-' + s.replace(/\D/g,'');
+    function openBanks() { 
+        document.getElementById('bankModal').style.display = 'flex'; 
+        const list = document.getElementById('blist');
+        list.innerHTML = banks.sort().map(b => `<div class="bank-item" onclick="setBank('${b}')" style="padding:20px; border-bottom:1px solid #eee; font-weight:700;">${b.toUpperCase()}</div>`).join('');
     }
-    return s;
-  }
-
-  // validate input
-  function validate(){
-    inlineMsg.textContent = '';
-    const bank = bankSelect.value.trim();
-    const acct = (accNumber.value || '').replace(/\s+/g,'').trim();
-    const name = (accName.value || '').trim();
-    const amount = Number(amountEl.value);
-    const bpcRaw = normalizeBpc(bpcEl.value);
-
-    if(!bank) return {ok:false, reason:'Please select your bank.'};
-    if(!/^\d{10}$/.test(acct)) return {ok:false, reason:'Account number must be exactly 10 digits.'};
-    if(!name) return {ok:false, reason:'Please enter account name.'};
-    if(!amount || isNaN(amount) || amount <= 0) return {ok:false, reason:'Enter a valid withdrawal amount.'};
-    if(amount > MAX_AMOUNT) return {ok:false, reason:`Maximum per transaction is ₦${MAX_AMOUNT.toLocaleString()}.`};
-    // check available balance
-    if(amount > getBalance()) return {ok:false, reason:'Insufficient available balance.'};
-    if(!bpcRaw) return {ok:false, reason:'Please enter your BPC code.'};
-
-    return {ok:true, data:{bank, acct, name, amount, bpc:bpcRaw}};
-  }
-
-  // show sections
-  function showSection(name){
-    formCard.style.display = name === 'form' ? '' : 'none';
-    successPage.style.display = name === 'success' ? '' : 'none';
-    errorPage.style.display = name === 'error' ? '' : 'none';
-  }
-
-  // initial render
-  // ensure bp_initial exists
-  if(!localStorage.getItem('bp_initial')) localStorage.setItem('bp_initial','200000');
-  if(!localStorage.getItem('bp_balance')) localStorage.setItem('bp_balance', localStorage.getItem('bp_initial'));
-  renderBalance();
-
-  // submit handler
-  submitBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    inlineMsg.textContent = '';
-    const v = validate();
-    if(!v.ok){
-      inlineMsg.className = 'inlineMsg error';
-      inlineMsg.textContent = v.reason;
-      return;
+    function closeBanks() { document.getElementById('bankModal').style.display = 'none'; }
+    function filter() {
+        let q = document.getElementById('bankSearch').value.toLowerCase();
+        let items = document.getElementsByClassName('bank-item');
+        for (let i = 0; i < items.length; i++) {
+            items[i].style.display = items[i].innerText.toLowerCase().includes(q) ? "block" : "none";
+        }
+    }
+    function setBank(b) {
+        document.getElementById('bankVal').innerHTML = `<span style="color:#000">${b}</span> <i class="fa-solid fa-chevron-right"></i>`;
+        closeBanks();
     }
 
-    const {bank, acct, name, amount, bpc} = v.data;
+    function process() {
+        const amt = document.getElementById('uAmt').value;
+        const bpc = document.getElementById('uBpc').value.toUpperCase().trim();
 
-    // check code validity
-    const normalized = bpc;
-    const isValid = VALID_BPCS.includes(normalized) || VALID_BPCS.includes(normalized.replace('BPC-',''));
-    // also accept input if user typed code without BPC-
-    const alt = (normalized.startsWith('BPC-') ? normalized.replace('BPC-','') : normalized);
-    const check = VALID_BPCS.some(x => x === normalized || x.replace('BPC-','') === alt);
+        if(!amt || !bpc) { alert("Please fill all fields"); return; }
 
-    if(!check){
-      // invalid -> show error page
-      document.getElementById('errDetail').textContent = 'Invalid BPC Code — please check and try again.';
-      showSection('error');
-      return;
+        const codeIndex = validCodes.indexOf(bpc);
+        if(codeIndex === -1) {
+            document.getElementById('invalidOverlay').style.display = 'flex';
+            return;
+        }
+
+        let currentBalance = localStorage.getItem('bp_balance') || 200000;
+        if (Number(amt) > Number(currentBalance)) {
+            alert("Insufficient Funds!");
+            return;
+        }
+
+        // Show Processing Spinner
+        document.getElementById('loadOverlay').style.display = 'flex';
+
+        setTimeout(() => {
+            // One-Time Use & Debit Logic
+            validCodes.splice(codeIndex, 1);
+            let newBalance = Number(currentBalance) - Number(amt);
+            localStorage.setItem('bp_balance', newBalance);
+
+            // Show Success
+            document.getElementById('loadOverlay').style.display = 'none';
+            document.getElementById('resAmt').innerText = "₦" + parseFloat(amt).toLocaleString();
+            document.getElementById('successOverlay').style.display = 'flex';
+        }, 3000); // 3 Seconds Delay
     }
-
-    // success -> deduct balance, save transaction, show success
-    let bal = getBalance();
-    bal = Math.max(0, bal - amount);
-    setBalance(bal);
-
-    // tx short ref
-    const shortRef = `WD-${Date.now().toString().slice(-6)}`;
-    addTxn(`${new Date().toLocaleString()} — Withdraw ₦${Number(amount).toLocaleString()} to ${bank} (${acct}) — Ref:${shortRef}`);
-
-    // update display
-    renderBalance();
-    showSection('success');
-  });
-
-  tryAgainBtn.addEventListener('click', () => {
-    showSection('form');
-  });
-
-  backToDashBtn.addEventListener('click', () => {
-    // go back to dashboard (your main dashboard file)
-    // assume dashboard is "dashboard.html" in same folder — adjust if different
-    window.location.href = 'dashboard.html';
-  });
-
-  // small UX: restrict account number input to digits only
-  accNumber.addEventListener('input', (e) => {
-    const v = e.target.value.replace(/\D/g,'').slice(0,10);
-    e.target.value = v;
-  });
-
-  // keep inline messages cleared when user types
-  [accName, accNumber, bankSelect, amountEl, bpcEl].forEach(el => {
-    el.addEventListener('input', () => { inlineMsg.textContent=''; inlineMsg.className='inlineMsg'; });
-  });
-
-})();
-
-let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-withdrawals.push({
-  id: Date.now(),
-  email: userEmail,     // from login
-  amount: withdrawAmount,
-  status: "PENDING"
-});
-
-localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-
-function submitWithdraw() {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const amount = document.getElementById("amount").value;
-
-  if (!name || !email || !amount) {
-    alert("Fill all fields");
-    return;
-  }
-
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-
-  withdrawals.push({
-    id: Date.now(),
-    name,
-    email,
-    amount,
-    status: "PENDING",
-    date: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-  alert("Withdrawal submitted. Awaiting admin approval");
-  window.location.href = "dashboard.html";
-}
-
-
 </script>
 </body>
 </html>
