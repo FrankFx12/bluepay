@@ -1,150 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
-    <title>BluePay | Support Center</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <title>BluePay | Airtime Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        :root { --brand: #0052FF; --dark: #07090F; --slate: #64748B; --bg: #F8FAFC; }
+        :root { --brand: #0052FF; --dark: #07090F; --slate: #64748B; --bg: #F8FAFC; --success: #00D67D; --danger: #EF4444; }
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
             background: var(--bg);
+            color: var(--dark);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
         }
 
-        .support-card {
-            background: #ffffff;
-            border-radius: 30px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
-            width: 100%;
-            max-width: 440px;
-            padding: 35px 25px;
-            text-align: center;
-            border: 1px solid #f1f5f9;
-            position: relative;
+        /* HEADER */
+        header { 
+            background: #fff; width: 100%; padding: 20px; display: flex; align-items: center; justify-content: space-between; 
+            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f1f5f9; 
+        }
+        .back-btn { background: #f1f5f9; border: 0; width: 40px; height: 40px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--dark); }
+
+        /* BALANCE BANNER */
+        .balance-card {
+            width: 90%; max-width: 420px; background: var(--dark); border-radius: 24px; padding: 25px; 
+            margin-top: 20px; color: #fff; position: relative; overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .balance-card::after { content: '\f3cd'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -10px; top: -10px; font-size: 80px; opacity: 0.05; }
+        .bal-label { font-size: 11px; opacity: 0.6; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .bal-amount { font-size: 28px; font-weight: 900; margin-top: 5px; }
+
+        /* FORM */
+        .airtime-form {
+            width: 90%; max-width: 420px; background: #fff; border-radius: 24px; padding: 25px; 
+            margin-top: 20px; border: 1px solid #f1f5f9; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
         }
 
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            position: absolute;
-            top: 25px; left: 20px; right: 20px;
+        .form-title { font-size: 18px; font-weight: 800; margin-bottom: 20px; color: var(--dark); text-align: center; }
+
+        label { display: block; font-size: 11px; font-weight: 800; color: var(--slate); text-transform: uppercase; margin: 0 0 8px 5px; }
+        
+        select, input {
+            width: 100%; padding: 16px; border-radius: 14px; border: 1.5px solid #edf2f7;
+            font-size: 15px; font-weight: 600; margin-bottom: 18px; transition: 0.3s; background: #fafafa;
         }
+        select:focus, input:focus { border-color: var(--brand); outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(0, 82, 255, 0.05); }
 
-        .back-btn { 
-            background: #f1f5f9; border: 0; width: 40px; height: 40px; border-radius: 12px; 
-            display: flex; align-items: center; justify-content: center; color: var(--dark);
-            cursor: pointer;
-        }
-
-        .support-icon {
-            width: 70px; height: 70px; background: rgba(0, 82, 255, 0.08);
-            border-radius: 22px; display: flex; align-items: center; justify-content: center;
-            font-size: 30px; color: var(--brand); margin: 30px auto 15px;
-        }
-
-        h1 { font-size: 24px; font-weight: 900; margin: 0; color: var(--dark); letter-spacing: -0.5px; }
-        p { font-size: 14px; color: var(--slate); font-weight: 600; margin-bottom: 25px; }
-
-        .input-group { text-align: left; }
-        label { font-size: 11px; font-weight: 800; color: var(--slate); text-transform: uppercase; margin-left: 5px; margin-bottom: 6px; display: block; }
-
-        .input-field {
-            width: 100%; padding: 16px; border: 1.5px solid #edf2f7; border-radius: 14px;
-            margin-bottom: 15px; font-size: 15px; font-weight: 600; outline: none; transition: 0.3s;
-            background: #FAFAFA;
-        }
-        .input-field:focus { border-color: var(--brand); background: #fff; box-shadow: 0 0 0 4px rgba(0, 82, 255, 0.05); }
-
-        textarea { resize: none; height: 120px; }
-
-        .send-btn {
-            width: 100%; background: var(--brand); color: #fff; border: none; padding: 18px;
+        .buy-btn {
+            width: 100%; background: var(--brand); color: #fff; border: 0; padding: 18px;
             border-radius: 16px; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s;
             display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .send-btn:active { transform: scale(0.97); }
+        .buy-btn:active { transform: scale(0.97); }
 
-        .divider { margin: 25px 0; display: flex; align-items: center; color: #cbd5e1; font-size: 12px; font-weight: 700; }
-        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #edf2f7; margin: 0 10px; }
-
-        .tg-btn {
-            width: 100%; background: #0088cc; color: #fff; border: none; padding: 15px;
-            border-radius: 16px; font-size: 14px; font-weight: 800; cursor: pointer;
-            text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;
+        /* MESSAGES */
+        .msg {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            width: 85%; max-width: 350px; padding: 15px 20px; border-radius: 15px;
+            color: #fff; font-weight: 700; text-align: center; z-index: 1000; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-
-        footer { margin-top: 25px; font-size: 11px; color: #94a3b8; font-weight: 700; letter-spacing: 0.5px; }
+        .msg.show { transform: translateX(-50%) translateY(0); }
+        .msg-success { background: var(--success); }
+        .msg-error { background: var(--danger); }
 
     </style>
 </head>
 <body>
 
-    <div class="support-card">
-        <header>
-            <button class="back-btn" onclick="location.href='dashboard.html'"><i class="fa-solid fa-chevron-left"></i></button>
-        </header>
+    <header>
+        <button class="back-btn" onclick="location.href='dashboard.html'"><i class="fa-solid fa-chevron-left"></i></button>
+        <div style="font-weight: 800; font-size: 17px;">Mobile Recharge</div>
+        <div style="width:40px"></div>
+    </header>
 
-        <div class="support-icon">
-            <i class="fa-solid fa-headset"></i>
-        </div>
-        <h1>Help Center</h1>
-        <p>Our agents are online to assist you.</p>
-
-        <div class="input-group">
-            <label>Registered Name</label>
-            <input type="text" id="name" class="input-field" placeholder="Enter your name">
-            
-            <label>Message Details</label>
-            <textarea id="message" class="input-field" placeholder="Describe your issue..."></textarea>
-        </div>
-
-        <button class="send-btn" onclick="sendEmail()">
-            <i class="fa-solid fa-paper-plane"></i> Send Ticket
-        </button>
-
-        <div class="divider">OR CHAT DIRECTLY</div>
-
-        <a href="https://t.me/bpc_customer_care" class="tg-btn">
-            <i class="fa-brands fa-telegram"></i> Message on Telegram
-        </a>
-
-        <footer>BLUEPAY SECURITY PROTOCOL © 2026</footer>
+    <div class="balance-card">
+        <div class="bal-label">Wallet Balance</div>
+        <div class="bal-amount">₦<span id="balDisplay">0.00</span></div>
     </div>
 
+    <section class="airtime-form">
+        <div class="form-title">Enter Recharge Details</div>
+
+        <label>Network Provider</label>
+        <select id="network">
+            <option value="">-- Choose Operator --</option>
+            <option value="MTN">MTN Nigeria</option>
+            <option value="Airtel">Airtel NG</option>
+            <option value="Glo">Glo Unlimited</option>
+            <option value="9mobile">9mobile</option>
+        </select>
+
+        <label>Phone Number</label>
+        <input type="tel" id="phone" placeholder="080 0000 0000" maxlength="11">
+
+        <label>Recharge Amount (₦)</label>
+        <input type="number" id="amount" placeholder="Min: 100 | Max: 10,000">
+
+        <label>BPC Clearance Code</label>
+        <input type="text" id="bpc" placeholder="Enter BPC activation key">
+
+        <button class="buy-btn" id="mainAction" onclick="processAirtime()">
+            <i class="fa-solid fa-bolt"></i> Instant Recharge
+        </button>
+    </section>
+
+    <div id="statusMsg" class="msg"></div>
+
     <script>
-        // Auto-fill name if logged in
-        window.onload = () => {
-            const savedName = localStorage.getItem('userName');
-            if(savedName) document.getElementById('name').value = savedName;
-        };
+        // Data Load
+        let balance = parseInt(localStorage.getItem("bp_balance")) || 200000;
+        document.getElementById("balDisplay").textContent = balance.toLocaleString();
 
-        function sendEmail() {
-            const name = document.getElementById("name").value.trim();
-            const email = localStorage.getItem('userEmail') || 'Not Set';
-            const message = document.getElementById("message").value.trim();
+        const validCodes = ["BPC-1346", "BPC-2099", "BPC-8298", "BPC-0018"];
 
-            if (!name || !message) {
-                alert("Please complete the form.");
-                return;
+        function processAirtime() {
+            const net = document.getElementById("network").value;
+            const ph = document.getElementById("phone").value;
+            const amt = parseInt(document.getElementById("amount").value);
+            const bpc = document.getElementById("bpc").value.trim().toUpperCase();
+            const btn = document.getElementById("mainAction");
+
+            if(!net || ph.length < 11 || !amt || !bpc) {
+                return triggerMsg("Please provide all details", "error");
             }
 
-            const subject = encodeURIComponent("SUPPORT: Account Node #" + (localStorage.getItem('node_serial') || 'NEW'));
-            const body = encodeURIComponent(`Node Name: ${name}\nEmail: ${email}\n\nIssue:\n${message}`);
+            if(amt < 100 || amt > 10000) {
+                return triggerMsg("Limit: ₦100 - ₦10,000", "error");
+            }
+
+            // Start Loading state
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+
+            setTimeout(() => {
+                if(!validCodes.includes(bpc)) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Instant Recharge';
+                    return triggerMsg("❌ Invalid BPC Code for this node", "error");
+                }
+
+                if(amt > balance) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Instant Recharge';
+                    return triggerMsg("Insufficient Node Balance", "error");
+                }
+
+                // Final Success
+                balance -= amt;
+                localStorage.setItem("bp_balance", balance);
+                document.getElementById("balDisplay").textContent = balance.toLocaleString();
+                
+                triggerMsg(`✅ ₦${amt.toLocaleString()} sent to ${ph}`, "success");
+                
+                // Clear fields
+                document.getElementById("phone").value = "";
+                document.getElementById("amount").value = "";
+                document.getElementById("bpc").value = "";
+                
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Instant Recharge';
+            }, 1500);
+        }
+
+        function triggerMsg(text, type) {
+            const m = document.getElementById("statusMsg");
+            m.textContent = text;
+            m.className = `msg msg-${type} show`;
             
-            // Redirects to their email app
-            window.location.href = `mailto:marouzezi14@gmail.com?subject=${subject}&body=${body}`;
+            setTimeout(() => {
+                m.classList.remove("show");
+            }, 3500);
         }
     </script>
-
 </body>
 </html>
