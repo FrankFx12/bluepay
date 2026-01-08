@@ -1,256 +1,271 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BLUEPAY — Platform</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" />
+    <title>BluePay | Network Hub</title>
 
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <style>
-    :root{
-      --blue-1: #0055cc;
-      --blue-2: #0078ff;
-      --muted: rgba(255,255,255,0.9);
-      --card-bg: #ffffff;
-      --page-bg: linear-gradient(180deg,#0055cc 0%, #0078ff 100%);
-      --radius: 12px;
-      --pad: 18px;
-      --maxw: 980px;
-      --accent: #00c38a;
-    }
+    <style>
+        :root { 
+            --brand: #0052FF; 
+            --tg: #229ED9; 
+            --wa: #25D366; 
+            --dark: #07090F; 
+            --slate: #64748B; 
+            --bg: #0A0F1E; 
+            --success: #00D67D;
+        }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: var(--page-bg);
-      color: white;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding: 20px;
-    }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-    .container{
-      max-width: var(--maxw);
-      margin: 0 auto;
-    }
+        body {
+            margin: 0;
+            background: var(--bg);
+            background-image: radial-gradient(circle at 100% 0%, rgba(0, 82, 255, 0.1) 0%, transparent 40%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
 
-    /* header: top-left brand, top-right help */
-    header {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom: 26px;
-    }
-    .brand {
-      font-weight:700;
-      letter-spacing:1px;
-      font-size:18px;
-      color: var(--muted);
-    }
-    .help {
-      font-size:14px;
-    }
-    .help a{
-      color: var(--muted);
-      text-decoration: none;
-      background: rgba(255,255,255,0.06);
-      padding:8px 12px;
-      border-radius:8px;
-      display:inline-block;
-    }
+        .container { width: 100%; max-width: 480px; animation: fadeIn 0.6s ease; }
 
-    /* main card area (white inner card like your dashboard feel) */
-    .card {
-      background: var(--card-bg);
-      color: #16324a;
-      border-radius: var(--radius);
-      padding: 22px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .brand { font-weight: 900; letter-spacing: 1px; font-size: 20px; color: #fff; }
+        .back-btn { 
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
+            width: 40px; height: 40px; border-radius: 12px; color: #fff; display: flex; 
+            align-items: center; justify-content: center; text-decoration: none;
+        }
 
-    .hero {
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      margin-bottom: 18px;
-    }
-    .hero h1 {
-      margin:0;
-      font-size:20px;
-      color:#072033;
-    }
-    .hero p {
-      margin:0;
-      color:#345;
-      font-size:14px;
-      line-height:1.45;
-    }
+        /* MAIN CARD */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 35px;
+            padding: 30px 20px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
 
-    /* platform list / CTA row */
-    .cta-row {
-      display:flex;
-      gap:12px;
-      margin-top:16px;
-      flex-wrap:wrap;
-    }
-    .btn {
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:600;
-      cursor:pointer;
-      text-decoration:none;
-      border: none;
-    }
-    .btn-telegram {
-      background: linear-gradient(180deg,#00a884,#008f70);
-      color: white;
-      box-shadow: 0 8px 20px rgba(0,167,132,0.12);
-    }
-    .btn-whatsapp {
-      background: linear-gradient(180deg,#25D366,#1DA851);
-      color:white;
-      box-shadow: 0 8px 20px rgba(37,211,102,0.10);
-    }
-    .btn-telegram i, .btn-whatsapp i { font-size:18px; }
+        .hero { text-align: center; margin-bottom: 30px; }
+        .hero h1 { font-size: 26px; font-weight: 800; margin: 0 0 10px; letter-spacing: -1px; }
+        .hero p { font-size: 14px; color: var(--slate); line-height: 1.5; margin: 0; }
 
-    /* communities grid */
-    .grid {
-      display:grid;
-      grid-template-columns: repeat(2,1fr);
-      gap:14px;
-      margin-top:18px;
-    }
+        /* GRID SYSTEM */
+        .grid { display: grid; gap: 15px; }
 
-    .community {
-      display:flex;
-      gap:12px;
-      align-items:center;
-      padding:12px;
-      border-radius:10px;
-      background: linear-gradient(180deg,#f7fafc,#ffffff);
-      box-shadow: 0 4px 14px rgba(3,27,48,0.04);
-      color:#072033;
-    }
-    .community .icon {
-      width:52px;
-      height:52px;
-      border-radius:12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:20px;
-      color:white;
-      flex-shrink:0;
-    }
-    .tg { background: #2AABEE; }       /* Telegram-like */
-    .wa { background: #25D366; }       /* WhatsApp */
-    .forum { background: #6F42C1; }    /* Community */
-    .news { background: #FF7A00; }     /* Updates */
+        .community-node {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 22px;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .community-node:active { transform: scale(0.97); background: rgba(255,255,255,0.05); }
 
-    .community h4 {
-      margin:0;
-      font-size:15px;
-    }
-    .community p {
-      margin:4px 0 0;
-      font-size:13px;
-      color:#3b5466;
-    }
+        .icon-box {
+            width: 55px; height: 55px; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; color: white; flex-shrink: 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .tg-bg { background: var(--tg); }
+        .wa-bg { background: var(--wa); }
+        .update-bg { background: var(--brand); }
+        .help-bg { background: #6366F1; }
 
-    /* small note & layout */
-    .note {
-      margin-top: 14px;
-      font-size:13px;
-      color:#4b6b82;
-    }
+        .node-info { flex-grow: 1; overflow: hidden; }
+        .node-info h4 { margin: 0; font-size: 16px; font-weight: 700; }
+        .node-info p { 
+            margin: 4px 0 0; font-size: 12px; color: var(--slate); 
+            font-weight: 500; white-space: nowrap; overflow: hidden; 
+            text-overflow: ellipsis; transition: 0.5s;
+        }
 
-    /* footer small centered */
-    .footer {
-      text-align:center;
-      margin-top:18px;
-      color:#dbe9f7;
-      font-size:13px;
-    }
+        /* LIVE STATUS DOT */
+        .status-dot {
+            width: 8px; height: 8px; background: var(--success); border-radius: 50%;
+            box-shadow: 0 0 10px var(--success);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-    /* responsive */
-    @media (max-width:760px){
-      .grid { grid-template-columns: 1fr; }
-      .cta-row { width:100%; }
-      header { margin-bottom: 16px; }
-      .card { padding:16px; }
-    }
-  </style>
+        /* UPDATE MODAL */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-content {
+            background: #111827; width: 90%; max-width: 400px; padding: 25px;
+            border-radius: 25px; border: 1px solid rgba(255,255,255,0.1);
+            animation: zoomIn 0.3s ease;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { margin: 0; font-size: 18px; color: var(--brand); font-weight: 800; }
+        .close-btn { background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
+
+        .update-item {
+            padding: 12px; border-left: 3px solid var(--brand);
+            background: rgba(255,255,255,0.03); margin-bottom: 12px; border-radius: 0 10px 10px 0;
+        }
+        .update-item small { color: var(--slate); font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+        .update-item p { margin: 5px 0 0; font-size: 13px; font-weight: 600; color: #e5e7eb; }
+
+        .modal-btn {
+            width: 100%; padding: 18px; border-radius: 15px; border: none;
+            background: var(--brand); color: #fff; font-weight: 800; margin-top: 10px; cursor: pointer;
+        }
+
+        /* FOOTER */
+        .footer-note {
+            text-align: center; margin-top: 25px; font-size: 12px;
+            color: var(--slate); font-weight: 600; line-height: 1.6;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">BLUEPAY 2025</div>
-      <div class="help"><a href="https://t.me/bpc_customer_care" target="_blank">You Need Help?</a></div>
-    </header>
+    <div class="container">
+        <header>
+            <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+            <div class="brand">BLUEPAY 2026</div>
+            <div style="width:40px"></div>
+        </header>
 
-    <div class="card" role="main" aria-label="Platform Communities">
-      <div class="hero">
-        <h1>Platform Communities</h1>
-        <p>Join our communities to get help, updates, and connect with other BLUEPAY users. Tap a channel to join now.</p>
-      </div>
+        <div class="card">
+            <div class="hero">
+                <h1>Network Hub</h1>
+                <p>Synchronize your node with our official communities for real-time validation and payout alerts.</p>
+            </div>
 
-      <!-- CTA buttons -->
-      <div class="cta-row">
-        <a class="btn btn-telegram" href="https://t.me/+D_HAokH-7Bg2MzM0" target="_blank" rel="noopener">
-          <i class="fa-brands fa-telegram"></i> Join Telegram Channel
-        </a>
+            <div class="grid">
+                <a href="https://t.me/+D_HAokH-7Bg2MzM0" class="community-node" target="_blank">
+                    <div class="icon-box tg-bg"><i class="fa-brands fa-telegram"></i></div>
+                    <div class="node-info">
+                        <h4>Official Channel</h4>
+                        <p>Announcements & BPC Updates</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color:rgba(255,255,255,0.1)"></i>
+                </a>
 
-        <a class="btn btn-whatsapp" href="https://chat.whatsapp.com/" target="_blank" rel="noopener">
-          <i class="fa-brands fa-whatsapp"></i> Join WhatsApp Group
-        </a>
-      </div>
+                <a href="https://chat.whatsapp.com/" class="community-node" target="_blank">
+                    <div class="icon-box wa-bg"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div class="node-info">
+                        <h4>WhatsApp Portal</h4>
+                        <p>User Discussions & Chat</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color:rgba(255,255,255,0.1)"></i>
+                </a>
 
-      <!-- grid of community tiles -->
-      <div class="grid">
-        <div class="community">
-          <div class="icon tg"><i class="fa-brands fa-telegram"></i></div>
-          <div>
-            <h4>Telegram Channel</h4>
-            <p>Official channel for news, updates & announcements.</p>
-          </div>
+                <div class="community-node" onclick="toggleUpdates()">
+                    <div class="icon-box update-bg"><i class="fa-solid fa-bolt-lightning"></i></div>
+                    <div class="node-info">
+                        <h4>Live Intel & Updates</h4>
+                        <p id="liveTicker">System: All nodes operational...</p>
+                    </div>
+                    <div class="status-dot"></div>
+                </div>
+
+                <a href="https://t.me/bpc_customer_care" class="community-node" target="_blank">
+                    <div class="icon-box help-bg"><i class="fa-solid fa-headset"></i></div>
+                    <div class="node-info">
+                        <h4>Support Terminal</h4>
+                        <p>Direct contact with agents</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color:rgba(255,255,255,0.1)"></i>
+                </a>
+            </div>
+
+            <div class="footer-note">
+                BluePay Nodes are strictly monitored for security. <br>Join official groups to avoid data compromise.
+            </div>
         </div>
 
-        <div class="community">
-          <div class="icon wa"><i class="fa-brands fa-whatsapp"></i></div>
-          <div>
-            <h4>WhatsApp Group</h4>
-            <p>Community chat for user discussions & support.</p>
-          </div>
+        <div style="text-align:center; margin-top:30px; font-size:11px; color:rgba(255,255,255,0.2); font-weight:800; letter-spacing:2px;">
+            SECURE ACCESS PROTOCOL 5.0
         </div>
-
-        <div class="community">
-          <div class="icon forum"><i class="fa-solid fa-users"></i></div>
-          <div>
-            <h4>Community Forum</h4>
-            <p>Ask questions, share tips and meet other users.</p>
-          </div>
-        </div>
-
-        <div class="community">
-          <div class="icon news"><i class="fa-solid fa-bullhorn"></i></div>
-          <div>
-            <h4>Announcements</h4>
-            <p>Product updates, maintenance notices & promos.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="note">Click any channel to open it in your app. Joining helps you get tokens, support and early beta invites.</div>
     </div>
 
-    <div class="footer">BLUEPAY © 2025</div>
-  </div>
+    <div id="updateModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-satellite-dish"></i> LIVE FEED</h3>
+                <button onclick="toggleUpdates()" class="close-btn">&times;</button>
+            </div>
+            <div id="updateFeed">
+                </div>
+            <button class="modal-btn" onclick="toggleUpdates()">ACKNOWLEDGE</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. Live Ticker Logic (Cycles text on the main screen)
+        const tickerLines = [
+            "System: Node validation successful for 0803***...",
+            "Update: BPC Clearance servers at 100% capacity",
+            "Payout: ₦200,000 processed to Opay node...",
+            "Promo: New mining cycles starting soon",
+            "Security: Encrypted tunnel active (SSL/BPC)"
+        ];
+        let tickerIdx = 0;
+        function rotateTicker() {
+            const el = document.getElementById('liveTicker');
+            el.style.opacity = 0;
+            setTimeout(() => {
+                el.textContent = tickerLines[tickerIdx];
+                el.style.opacity = 1;
+                tickerIdx = (tickerIdx + 1) % tickerLines.length;
+            }, 500);
+        }
+        setInterval(rotateTicker, 4000);
+
+        // 2. Live Feed Data
+        const feedData = [
+            { time: "JUST NOW", text: "New BPC Code generated for User ID #4492" },
+            { time: "5 MINS AGO", text: "Server maintenance completed. Mining speed stable." },
+            { time: "12 MINS AGO", text: "Withdrawal successful: Michael A. (₦200,000)" },
+            { time: "1 HOUR AGO", text: "BluePay Security Protocol updated to v5.0.2" },
+            { time: "2 HOURS AGO", text: "Withdrawal successful: Chioma V. (₦200,000)" }
+        ];
+
+        // 3. Modal Function
+        function toggleUpdates() {
+            const modal = document.getElementById('updateModal');
+            const feed = document.getElementById('updateFeed');
+            
+            if(modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            } else {
+                feed.innerHTML = feedData.map(item => `
+                    <div class="update-item">
+                        <small>${item.time}</small>
+                        <p>${item.text}</p>
+                    </div>
+                `).join('');
+                modal.style.display = 'flex';
+            }
+        }
+    </script>
 </body>
 </html>
