@@ -1,176 +1,152 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"/>
-    <title>BluePay | Secure Node 2026</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <title>BluePay | Secure Mining Node</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --brand: #0052FF; --dark: #07090F; --success: #00D67D; --error: #FF3B30; --bg: #F0F4F8; }
-        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; border-radius: 24px; }
-        
-        body { margin: 0; background: var(--bg); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; color: var(--dark); overflow-x: hidden; }
-        .app-shell { width: 100%; max-width: 430px; padding: 20px; position: relative; }
-
-        header { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 900; font-size: 26px; color: var(--brand); letter-spacing: -1.5px; }
-        .live-tag { background: #fff; padding: 8px 15px; border-radius: 50px; font-size: 10px; font-weight: 900; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
-
-        .card { background: #fff; padding: 30px 25px; border: 1px solid #E2E8F0; box-shadow: 0 20px 40px rgba(0,0,0,0.04); margin-bottom: 20px; }
-        .field { margin-bottom: 20px; }
-        label { display: block; font-size: 11px; font-weight: 800; color: #94A3B8; margin-bottom: 8px; text-transform: uppercase; }
-        
-        input, .bank-btn { width: 100%; padding: 18px; border: 2px solid #F1F5F9; background: #F8FAFC; font-size: 16px; font-weight: 700; outline: none; }
-        .bank-btn { cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #475569; }
-
-        .bpc-glass-box { 
-            background: linear-gradient(135deg, #0052FF 0%, #002B80 100%); 
-            padding: 25px 20px; margin-top: 10px; text-align: center;
-            box-shadow: 0 15px 30px rgba(0, 82, 255, 0.2); border: 1px solid rgba(255,255,255,0.1);
+        :root { 
+            --brand: #0052FF; 
+            --dark: #07090F; 
+            --success: #00D67D;
         }
-        .bpc-label { color: #FFFFFF; font-weight: 900; font-size: 13px; display: block; margin-bottom: 12px; }
-        .bpc-input { text-align: center; border: 2px solid rgba(255,255,255,0.3) !important; color: #FFFFFF !important; font-size: 24px; letter-spacing: 4px; background: rgba(255,255,255,0.1) !important; backdrop-filter: blur(10px); }
 
-        .btn-main { width: 100%; padding: 22px; background: var(--brand); color: #fff; border: none; font-size: 17px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        .overlay { display: none; position: fixed; inset: 0; background: rgba(240, 244, 248, 0.98); z-index: 10000; padding: 20px; align-items: center; justify-content: center; }
-        .status-card { background: #fff; width: 100%; max-width: 400px; padding: 45px 30px; text-align: center; border: 1px solid #E2E8F0; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
-        .icon-circle { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 35px; }
-        
-        /* Spinner Style */
-        .spinner { border: 4px solid rgba(0, 82, 255, 0.1); border-left-color: var(--brand); width: 40px; height: 40px; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            background: linear-gradient(180deg, #001A4D 0%, #000000 100%);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-        .bank-modal { display: none; position: fixed; inset: 0; background: #fff; z-index: 11000; flex-direction: column; padding: 25px; border-radius: 0; }
-        .search-bar { margin-bottom: 15px; border-radius: 15px; background: #F1F5F9; border: none; padding: 18px; width: 100%; font-weight: 700; }
+        /* TOP NAV */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .logo span { color: var(--brand); }
+
+        .live-status {
+            font-size: 10px;
+            font-weight: 800;
+            background: rgba(0, 214, 125, 0.1);
+            color: var(--success);
+            padding: 6px 14px;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 214, 125, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
+
+        /* HERO CONTENT */
+        .hero {
+            margin-top: 40px;
+            padding: 0 35px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 46px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+        }
+
+        .hero h1 span {
+            color: var(--brand);
+        }
+
+        .hero p {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 40px;
+            color: #94A3B8;
+            line-height: 1.5;
+            max-width: 340px;
+        }
+
+        /* CTA BUTTON */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-main {
+            padding: 22px;
+            background: var(--brand);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 82, 255, 0.3);
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-main:active { transform: scale(0.96); }
+
+        .btn-outline {
+            padding: 18px;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
-<div class="app-shell">
-    <div id="transferForm">
-        <header>
-            <div class="logo">BluePay.</div>
-            <div class="live-tag"><div class="dot"></div> SERVER LIVE</div>
-        </header>
-
-        <div class="card">
-            <h2 style="margin:0 0 25px; font-size:28px; font-weight:900;">Transfer Funds</h2>
-            <div class="field"><label>Recipient Name</label><input type="text" id="uName" placeholder="Account Name"></div>
-            <div class="field"><label>Select Bank</label><div class="bank-btn" onclick="openBanks()" id="bankVal"><span>Choose Bank</span><i class="fa-solid fa-chevron-right"></i></div></div>
-            <div class="field"><label>Account Number</label><input type="number" id="uAcct" placeholder="0000000000"></div>
-            <div class="field"><label>Amount (₦)</label><input type="number" id="uAmt" placeholder="0.00"></div>
-            
-            <div class="bpc-glass-box">
-                <a href="bpc.html" style="color:white; font-size:12px; font-weight:900; text-decoration:underline; display:block; margin-bottom:15px;">CLICK HERE TO BUY YOUR BPC CODE</a>
-                <span class="bpc-label">INSERT BPC CODE</span>
-                <input type="text" id="uBpc" class="bpc-input" placeholder="BPC-XXXX">
-            </div>
-            
-            <button class="btn-main" style="margin-top:25px;" id="procBtn" onclick="process()">Transfer Funds</button>
+    <div class="header">
+        <div class="logo">BLUE<span>PAY.</span></div>
+        <div class="live-status">
+            <div class="dot"></div> NODE ACTIVE
         </div>
     </div>
 
-    <div id="loadOverlay" class="overlay">
-        <div class="status-card">
-            <div class="spinner"></div>
-            <h2 style="font-weight:900; font-size:22px;">Securing Node...</h2>
-            <p style="color:#64748B; font-weight:600;">Verifying BPC clearance and bank route.</p>
+    <div class="hero">
+        <h1>Get Started <br>With <span>BluePay</span> <br>& Mine 200k.</h1>
+        <p>Connect to the secure node, start your mining session instantly, and withdraw your ₦200,000 earnings directly to your bank.</p>
+        
+        <div class="btn-group">
+            <a href="register.html" class="btn-main">Get Started Now</a>
+            <a href="login.html" class="btn-outline">Secure Login</a>
         </div>
     </div>
 
-    <div id="invalidOverlay" class="overlay">
-        <div class="status-card">
-            <div class="icon-circle" style="background:#FFEBEB; color:var(--error);"><i class="fa-solid fa-xmark"></i></div>
-            <h2 style="font-weight:900; font-size:32px; margin:0 0 10px;">INVALID CODE</h2>
-            <p style="color:#64748B; font-weight:600; line-height:1.6; margin-bottom:30px;">The BPC key you entered is incorrect or has expired. Please get a valid code to continue.</p>
-            <button class="btn-main" onclick="window.location.href='bpc.html'">BUY YOUR BPC CODE</button>
-            <p style="margin-top:20px; font-weight:800; color:var(--brand); cursor:pointer;" onclick="location.reload()">Return to Transfer</p>
-        </div>
-    </div>
-
-    <div id="successOverlay" class="overlay">
-        <div class="status-card">
-            <div class="icon-circle" style="background:#E6FBF2; color:var(--success);"><i class="fa-solid fa-check"></i></div>
-            <h2 style="font-weight:900; font-size:26px; margin:0 0 15px;">Transaction Confirmation</h2>
-            <p style="color:#475569; font-weight:600; line-height:1.6; margin-bottom:25px; font-size:15px;">
-                This transaction has been processed successfully. If the funds do not reflect within the stipulated time, kindly chat with your management for approval.
-            </p>
-            <div style="background:#F8FAFC; padding:15px; border-radius:15px; text-align:left; margin-bottom:25px; border:1px solid #EDF2F7;">
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="color:#94A3B8; font-weight:700;">Amount:</span><span id="resAmt" style="font-weight:800; color:var(--brand);">₦0.00</span></div>
-                <div style="display:flex; justify-content:space-between;"><span style="color:#94A3B8; font-weight:700;">Status:</span><span style="font-weight:800; color:var(--success);">AUTHORIZED</span></div>
-            </div>
-            <button class="btn-main" onclick="window.location.href='https://t.me/bpc_customer_care'">CHAT WITH MANAGEMENT</button>
-        </div>
-    </div>
-
-    <div id="bankModal" class="bank-modal">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;"><h2 style="font-weight:900;">Select Bank</h2><i class="fa-solid fa-times" style="font-size:28px; cursor:pointer;" onclick="closeBanks()"></i></div>
-        <input type="text" class="search-bar" id="bankSearch" placeholder="Search 100+ Banks..." onkeyup="filter()">
-        <div style="overflow-y:auto; flex:1;" id="blist"></div>
-    </div>
-</div>
-
-<script>
-    const banks = ["9PSB", "Abbey Mortgage Bank", "Access Bank", "Access Bank (Diamond)", "Accion MFB", "Al-Hayat MFB", "Amju Unique MFB", "Aramoko MFB", "ASO Savings", "Bainescredit MFB", "Boict MFB", "Bowen MFB", "Carbon", "CEMCS MFB", "Chanelle MFB", "Citibank Nigeria", "Corestep MFB", "Coronation Merchant Bank", "Crescent MFB", "Dot Bank", "Ecobank Nigeria", "Ekimogun MFB", "Eyowo", "FairMoney MFB", "Fidelity Bank", "Firmus MFB", "First Bank of Nigeria", "First City Monument Bank (FCMB)", "FSDH Merchant Bank", "Gateway Mortgage Bank", "Globus Bank", "GoMoney", "Green Bank MFB", "GTBank", "Hackman MFB", "Hasal MFB", "Heritage Bank", "Hope PSBank", "Ibom MFB", "Infinity MFB", "Jaiz Bank", "Kadpoly MFB", "Keystone Bank", "Kredi Money MFB", "Kuda Bank", "Lagos Building Investment", "Links MFB", "Living Trust MFB", "Lotus Bank", "Mayfair MFB", "Mint MFB", "Moniepoint MFB", "MTN MoMo PSB", "Nova Merchant Bank", "NPF Microfinance Bank", "Opay", "PalmPay", "Parallex Bank", "Parkway - ReadyCash", "Peace Microfinance Bank", "Personal Trust MFB", "Petra MFB", "Polaris Bank", "PremiumTrust Bank", "Providus Bank", "QuickFund MFB", "Rand Merchant Bank", "Refuge Mortgage Bank", "Rubies MFB", "Safe Haven MFB", "SafeGate MFB", "Sparkle Bank", "Stanbic IBTC Bank", "Standard Chartered Bank", "Sterling Bank", "SunTrust Bank", "TAJBank", "Tangerine Money", "TCF MFB", "Titan Bank", "Titan-Paystack", "UBA", "Union Bank", "Unity Bank", "VFD MFB", "Wema Bank", "Zenith Bank"];
-
-    const validCodes = [];
-    for(let i=1000; i<=1100; i++) { validCodes.push("BPC-" + i); }
-
-    function openBanks() { 
-        document.getElementById('bankModal').style.display = 'flex'; 
-        const list = document.getElementById('blist');
-        list.innerHTML = banks.sort().map(b => `<div class="bank-item" onclick="setBank('${b}')" style="padding:20px; border-bottom:1px solid #eee; font-weight:700;">${b.toUpperCase()}</div>`).join('');
-    }
-    function closeBanks() { document.getElementById('bankModal').style.display = 'none'; }
-    function filter() {
-        let q = document.getElementById('bankSearch').value.toLowerCase();
-        let items = document.getElementsByClassName('bank-item');
-        for (let i = 0; i < items.length; i++) {
-            items[i].style.display = items[i].innerText.toLowerCase().includes(q) ? "block" : "none";
-        }
-    }
-    function setBank(b) {
-        document.getElementById('bankVal').innerHTML = `<span style="color:#000">${b}</span> <i class="fa-solid fa-chevron-right"></i>`;
-        closeBanks();
-    }
-
-    function process() {
-        const amt = document.getElementById('uAmt').value;
-        const bpc = document.getElementById('uBpc').value.toUpperCase().trim();
-
-        if(!amt || !bpc) { alert("Please fill all fields"); return; }
-
-        const codeIndex = validCodes.indexOf(bpc);
-        if(codeIndex === -1) {
-            document.getElementById('invalidOverlay').style.display = 'flex';
-            return;
-        }
-
-        let currentBalance = localStorage.getItem('bp_balance') || 200000;
-        if (Number(amt) > Number(currentBalance)) {
-            alert("Insufficient Funds!");
-            return;
-        }
-
-        // Show Processing Spinner
-        document.getElementById('loadOverlay').style.display = 'flex';
-
-        setTimeout(() => {
-            // One-Time Use & Debit Logic
-            validCodes.splice(codeIndex, 1);
-            let newBalance = Number(currentBalance) - Number(amt);
-            localStorage.setItem('bp_balance', newBalance);
-
-            // Show Success
-            document.getElementById('loadOverlay').style.display = 'none';
-            document.getElementById('resAmt').innerText = "₦" + parseFloat(amt).toLocaleString();
-            document.getElementById('successOverlay').style.display = 'flex';
-        }, 3000); // 3 Seconds Delay
-    }
-</script>
 </body>
 </html>

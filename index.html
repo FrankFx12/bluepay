@@ -1,82 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BluePay 2025</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #003399, #0066ff);
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <title>BluePay | Secure Mining Node</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --brand: #0052FF; 
+            --dark: #07090F; 
+            --success: #00D67D;
+        }
 
-    /* Logo */
-    .logo {
-      font-size: 26px;
-      font-weight: bold;
-      padding: 15px 20px;
-      letter-spacing: 2px;
-      align-self: flex-start;
-    }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-    .logo span {
-      color: #66ccff;
-      font-weight: normal;
-      margin-left: 4px;
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            background: linear-gradient(180deg, #001A4D 0%, #000000 100%);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-    /* Description below logo */
-    .hero {
-      margin-top: 200px; /* Big space below logo */
-      padding: 0 20px;
-      text-align: left; /* keep it aligned left */
-      max-width: 600px;
-    }
+        /* TOP NAV */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+        }
 
-    .hero h1 {
-      font-size: 38px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
 
-    .hero p {
-      font-size: 18px;
-      margin-bottom: 30px;
-      color: #e6e6e6;
-    }
+        .logo span { color: var(--brand); }
 
-    .btn {
-      padding: 12px 30px;
-      background: #fff;
-      color: #003399;
-      border: none;
-      border-radius: 25px;
-      font-size: 16px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+        .live-status {
+            font-size: 10px;
+            font-weight: 800;
+            background: rgba(0, 214, 125, 0.1);
+            color: var(--success);
+            padding: 6px 14px;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 214, 125, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-    .btn:hover {
-      background: #f0f0f0;
-    }
-  </style>
+        .dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
+
+        /* HERO CONTENT */
+        .hero {
+            margin-top: 40px;
+            padding: 0 35px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 46px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+        }
+
+        .hero h1 span {
+            color: var(--brand);
+        }
+
+        .hero p {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 40px;
+            color: #94A3B8;
+            line-height: 1.5;
+            max-width: 340px;
+        }
+
+        /* CTA BUTTON */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-main {
+            padding: 22px;
+            background: var(--brand);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 82, 255, 0.3);
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-main:active { transform: scale(0.96); }
+
+        .btn-outline {
+            padding: 18px;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-  <!-- Logo at top-left -->
-  <div class="logo">BLUEPAY<span>2025</span></div>
 
-  <!-- Description below logo with space -->
-  <div class="hero">
-    <h1>Get Your Account Ready And Instantly.</h1>
-    <p>Get your account ready and instantly start buying, selling airtime and data online and start paying all your bills in cheaper price.</p>
-    <a href="register.html" class="btn">Get Started</a>
+    <div class="header">
+        <div class="logo">BLUE<span>PAY.</span></div>
+        <div class="live-status">
+            <div class="dot"></div> NODE ACTIVE
+        </div>
+    </div>
 
-  </div>
+    <div class="hero">
+        <h1>Get Started <br>With <span>BluePay</span> <br>& Mine 200k.</h1>
+        <p>Connect to the secure node, start your mining session instantly, and withdraw your ₦200,000 earnings directly to your bank.</p>
+        
+        <div class="btn-group">
+            <a href="register.html" class="btn-main">Get Started Now</a>
+            <a href="login.html" class="btn-outline">Secure Login</a>
+        </div>
+    </div>
+
 </body>
 </html>
