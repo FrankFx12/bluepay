@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover" />
+    <title>BluePay | BPC Clearance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { --brand: #0052FF; --dark: #07090F; --slate: #64748B; --bg: #F8FAFC; --success: #00D67D; }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { margin: 0; background: var(--bg); color: var(--dark); display: flex; justify-content: center; min-height: 100vh; }
+        .wrapper { width: 100%; max-width: 480px; padding-bottom: 100px; }
+
+        /* HEADER NAVIGATION */
+        header { 
+            background: #fff; padding: 20px; display: flex; align-items: center; justify-content: space-between; 
+            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f1f5f9; 
+        }
+        .back-btn { background: #f1f5f9; border: 0; width: 42px; height: 42px; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 18px; }
+
+        /* WARNING MARQUEE */
+        .notice-bar {
+            background: #FFFBEB; color: #92400E; padding: 12px; font-size: 11px; font-weight: 800; 
+            overflow: hidden; white-space: nowrap; border-bottom: 1px solid #FEF3C7;
+        }
+        .notice-bar span { display: inline-block; animation: scroll 18s linear infinite; }
+        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        .content { padding: 20px; }
+        .panel { background: #fff; border-radius: 28px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; margin-bottom: 20px; }
+
+        h2 { font-size: 24px; font-weight: 900; margin: 0 0 5px; letter-spacing: -0.8px; }
+        .price-tag { font-size: 32px; font-weight: 900; color: var(--brand); display: block; margin-bottom: 25px; }
+
+        label { display: block; font-size: 11px; font-weight: 800; color: var(--slate); text-transform: uppercase; margin-bottom: 8px; margin-left: 5px; }
+        input {
+            width: 100%; padding: 18px; border-radius: 16px; border: 1.5px solid #edf2f7;
+            font-size: 16px; font-weight: 600; margin-bottom: 20px; transition: 0.3s; background: #FAFAFA;
+        }
+        input:focus { border-color: var(--brand); outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(0, 82, 255, 0.05); }
+
+        .btn-main {
+            width: 100%; background: var(--brand); color: #fff; border: 0; padding: 20px;
+            border-radius: 18px; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .btn-main:active { transform: scale(0.96); }
+
+        /* BANK CARD */
+        .bank-card { background: var(--dark); color: white; padding: 25px; border-radius: 24px; margin-top: 20px; position: relative; overflow: hidden; }
+        .bank-card::after { content: '\f19c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -10px; bottom: -10px; font-size: 80px; opacity: 0.05; }
+        
+        .detail-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; position: relative; z-index: 2; }
+        .det-label { font-size: 10px; opacity: 0.5; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .det-val { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
+        .copy-btn { background: var(--brand); color: white; border: 0; padding: 10px 18px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; }
+
+        .timer-box { background: #FEF2F2; color: #EF4444; padding: 18px; border-radius: 16px; text-align: center; margin-top: 25px; font-weight: 900; font-size: 22px; border: 1px solid #FEE2E2; }
+
+        /* MODAL SYSTEM */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(7, 9, 15, 0.95); backdrop-filter: blur(8px);
+            display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
+        }
+        .overlay.active { display: flex; }
+        .modal { background: #fff; width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 35px; text-align: center; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* TOAST NOTIFICATION */
+        #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; padding: 12px 25px; border-radius: 50px; font-size: 13px; font-weight: 700; opacity: 0; transition: 0.3s; z-index: 2000; }
+
+        .hidden { display: none; }
+        
+        /* FLOATING CLOSE */
+        .float-close { position: fixed; bottom: 30px; right: 25px; width: 55px; height: 55px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); cursor: pointer; border: 1px solid #f1f5f9; z-index: 99; transition: 0.3s; }
+        .float-close:active { transform: scale(0.9); }
+    </style>
+</head>
+<body>
+
+    <div id="toast">Account Number Copied!</div>
+
+    <div class="wrapper">
+        <header>
+            <button class="back-btn" onclick="location.href='dashboard.html'"><i class="fa-solid fa-chevron-left"></i></button>
+            <div style="text-align: center;">
+                <div style="font-weight: 900; font-size: 18px; letter-spacing: -1px;">BLUEPAY</div>
+                <div style="font-size: 10px; font-weight: 800; color: var(--brand); text-transform: uppercase;">Payment Gateway</div>
+            </div>
+            <div style="width:42px"></div>
+        </header>
+
+        <div class="notice-bar">
+            <span>⚠️ NOTICE: After payment, send your receipt to support immediately to receive your  BPC Activation Code. And Don’t Use opay for transaction.</span>
+        </div>
+
+        <main class="content">
+            <section id="step1" class="panel">
+                <div style="font-size: 11px; font-weight: 900; color: var(--brand); margin-bottom: 10px; letter-spacing: 1px;">CLEARANCE REQUIRED</div>
+                <h2>Secure BPC Code</h2>
+                <span class="price-tag">₦10,499.00</span>
+
+                <label>Verification Full Name</label>
+                <input id="userName" type="text" placeholder="Legal Name on ID">
+
+                <label>Delivery Email Address</label>
+                <input id="userEmail" type="email" placeholder="name@example.com">
+
+                <button onclick="goStep2()" class="btn-main">Generate Payment Node</button>
+            </section>
+
+            <section id="step2" class="panel hidden" style="text-align: center; padding: 50px 30px;">
+                <div style="border: 5px solid #f1f5f9; border-top-color: var(--brand); width: 60px; height: 60px; border-radius: 50%; animation: spin 1s infinite; margin: 0 auto 25px;"></div>
+                <h2>Securing Session...</h2>
+                <div id="procCount" style="font-size: 45px; font-weight: 900; color: var(--brand);">10</div>
+                <p style="color: var(--slate); font-weight: 600;">Connecting to central bank gateway...</p>
+            </section>
+
+            <section id="step3" class="panel hidden">
+                <h2>Transfer Funds</h2>
+                <p style="color: var(--slate); font-size: 14px; margin-bottom: 25px;">Transfer exactly <b>₦10,499.00</b> to the account below.</p>
+
+                <div class="bank-card">
+                    <div class="detail-row">
+                        <div>
+                            <span class="det-label">Account Number</span>
+                            <div id="accNum" class="det-val" style="font-size: 26px;">5707009872</div>
+                        </div>
+                        <button class="copy-btn" onclick="copyNum('5707009872')">COPY</button>
+                    </div>
+                    <div class="detail-row">
+                        <div>
+                            <span class="det-label">Bank Name</span>
+                            <div class="det-val">MONIEPOINT</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="det-label">Account Holder</span>
+                            <div class="det-val">John Bernard</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timer-box" id="timer">30:00</div>
+                <button class="btn-main" style="margin-top: 25px;" onclick="finishOrder()">I Have Made Payment</button>
+            </section>
+        </main>
+    </div>
+
+    <div class="overlay" id="modal">
+        <div class="modal">
+            <div style="width: 80px; height: 80px; background: #E0F2FE; color: #0088cc; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 35px;">
+                <i class="fa-brands fa-telegram"></i>
+            </div>
+            <h2>Manual Release</h2>
+            <p style="color: var(--slate); font-size: 15px; line-height: 1.6; margin-bottom: 20px;">
+                Your withdrawal is currently <b>HELD</b>. Send your payment receipt and this reference ID to release your ₦200k.
+            </p>
+            
+            <div style="background: #F8FAFC; border: 2px dashed #CBD5E1; padding: 20px; border-radius: 18px; margin-bottom: 25px;">
+                <span style="font-size: 11px; font-weight: 900; color: var(--slate);">REFERENCE ID:</span>
+                <div id="refID" style="font-size: 22px; font-weight: 900; color: var(--dark); letter-spacing: 1px;">BPC-K89X2Z</div>
+            </div>
+
+            <button class="btn-main" style="background: #0088cc;" onclick="window.open('https://t.me/bpc_customer_care')">Send Receipt to Admin</button>
+            <button onclick="document.getElementById('modal').classList.remove('active')" style="background: none; border: 0; margin-top: 20px; color: var(--slate); font-weight: 700; cursor: pointer;">Cancel</button>
+        </div>
+    </div>
+
+    <div class="float-close" onclick="location.href='dashboard.html'">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+
+    <script>
+        // Load data
+        window.onload = () => {
+            document.getElementById('userName').value = localStorage.getItem('userName') || '';
+            document.getElementById('userEmail').value = localStorage.getItem('userEmail') || '';
+        };
+
+        function goStep2() {
+            if(!document.getElementById('userName').value) return alert("Please enter your name");
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            
+            let count = 10;
+            const t = setInterval(() => {
+                count--;
+                document.getElementById('procCount').innerText = count;
+                if(count <= 0) {
+                    clearInterval(t);
+                    document.getElementById('step2').classList.add('hidden');
+                    document.getElementById('step3').classList.remove('hidden');
+                    startTimer(1800);
+                }
+            }, 1000);
+        }
+
+        function startTimer(d) {
+            setInterval(() => {
+                let m = Math.floor(d/60);
+                let s = d%60;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                d--;
+            }, 1000);
+        }
+
+        function copyNum(v) {
+            navigator.clipboard.writeText(v);
+            const toast = document.getElementById('toast');
+            toast.style.opacity = '1';
+            setTimeout(() => toast.style.opacity = '0', 2000);
+        }
+
+        function finishOrder() {
+            const ref = 'BPC-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+            document.getElementById('refID').innerText = ref;
+            document.getElementById('modal').classList.add('active');
+        }
+    </script>
+    <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+</body>
+</html>
