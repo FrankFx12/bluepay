@@ -1,280 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buy Data - BLUEPAY</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <title>BluePay | Secure Data Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+    <style>
+        :root { --brand: #0052FF; --dark: #07090F; --slate: #64748B; --bg: #F8FAFC; --success: #00D67D; --danger: #EF4444; }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-    body {
-      background: #f5f6fa;
-      color: #111;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        body {
+            background: var(--bg);
+            color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-    /* === NAVBAR === */
-    .nav-bar {
-      width: 100%;
-      background: #0047FF;
-      color: #fff;
-      text-align: center;
-      padding: 14px;
-      font-size: 18px;
-      font-weight: 700;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+        /* HEADER */
+        header { 
+            background: #fff; width: 100%; padding: 20px; display: flex; align-items: center; justify-content: space-between; 
+            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f1f5f9; 
+        }
+        .back-btn { background: #f1f5f9; border: 0; width: 40px; height: 40px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--dark); }
 
-    /* === MAIN FORM === */
-    .data-form {
-      background: #fff;
-      width: 90%;
-      max-width: 420px;
-      margin: 20px auto;
-      padding: 22px 20px;
-      border-radius: 14px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    }
+        /* BALANCE CARD */
+        .balance-card {
+            width: 90%; max-width: 420px; background: linear-gradient(135deg, var(--dark), #1a1f2e); border-radius: 24px; padding: 25px; 
+            margin-top: 20px; color: #fff; position: relative; overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .balance-card::after { content: '\f0e7'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: -5px; bottom: -5px; font-size: 70px; opacity: 0.05; }
+        .bal-label { font-size: 11px; opacity: 0.6; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .bal-amount { font-size: 28px; font-weight: 900; margin-top: 5px; }
 
-    .data-form h3 {
-      font-size: 18px;
-      color: #0047FF;
-      margin-bottom: 15px;
-      text-align: center;
-    }
+        /* FORM */
+        .data-form {
+            width: 90%; max-width: 420px; background: #fff; border-radius: 28px; padding: 30px 25px; 
+            margin: 20px 0; border: 1px solid #f1f5f9; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
 
-    label {
-      font-weight: 600;
-      font-size: 14px;
-      display: block;
-      margin-bottom: 6px;
-    }
+        .form-title { font-size: 20px; font-weight: 900; margin-bottom: 20px; color: var(--dark); text-align: center; letter-spacing: -0.5px; }
 
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 14px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      outline: none;
-      font-size: 15px;
-      transition: 0.2s ease;
-    }
+        label { display: block; font-size: 11px; font-weight: 800; color: var(--slate); text-transform: uppercase; margin: 0 0 8px 5px; }
+        
+        select, input {
+            width: 100%; padding: 16px; border-radius: 14px; border: 1.5px solid #edf2f7;
+            font-size: 15px; font-weight: 600; margin-bottom: 18px; transition: 0.3s; background: #fafafa;
+        }
+        select:focus, input:focus { border-color: var(--brand); outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(0, 82, 255, 0.05); }
 
-    input:focus, select:focus {
-      border-color: #0047FF;
-      box-shadow: 0 0 4px rgba(0, 71, 255, 0.3);
-    }
+        .buy-btn {
+            width: 100%; background: var(--brand); color: #fff; border: 0; padding: 20px;
+            border-radius: 18px; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .buy-btn:active { transform: scale(0.97); }
 
-    /* === BUTTON === */
-    .buy-btn {
-      width: 100%;
-      background: #0047FF;
-      color: white;
-      border: none;
-      padding: 14px;
-      font-size: 15px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: 0.3s ease;
-    }
+        /* STATUS POPUP */
+        .msg {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-120px);
+            width: 85%; max-width: 350px; padding: 18px; border-radius: 20px;
+            color: #fff; font-weight: 800; text-align: center; z-index: 1000; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15); font-size: 14px;
+        }
+        .msg.show { transform: translateX(-50%) translateY(0); }
+        .msg-success { background: var(--success); }
+        .msg-error { background: var(--danger); }
 
-    .buy-btn:hover {
-      opacity: 0.9;
-      transform: scale(1.02);
-    }
-
-    /* === BALANCE TEXT === */
-    .balance {
-      text-align: center;
-      font-weight: 600;
-      color: #333;
-      margin-top: 12px;
-      font-size: 15px;
-    }
-
-    /* === POPUP MESSAGE === */
-    .message {
-      display: none;
-      position: fixed;
-      top: 15px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-30px);
-      padding: 14px 26px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 14px;
-      z-index: 1000;
-      opacity: 0;
-      transition: all 0.5s ease;
-    }
-
-    .message.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .success {
-      background: #22c55e;
-      color: white;
-    }
-
-    .error {
-      background: #ef4444;
-      color: white;
-    }
-
-    @media (max-width: 500px) {
-      .data-form {
-        width: 92%;
-        padding: 18px;
-        margin-top: 16px;
-      }
-
-      input, select {
-        font-size: 14px;
-        padding: 10px;
-      }
-
-      .buy-btn {
-        font-size: 14px;
-        padding: 12px;
-      }
-
-      .balance {
-        font-size: 14px;
-      }
-    }
-  </style>
+    </style>
 </head>
 <body>
 
-  <div class="nav-bar">Buy Data</div>
+    <header>
+        <button class="back-btn" onclick="location.href='dashboard.html'"><i class="fa-solid fa-arrow-left"></i></button>
+        <div style="text-align: center;">
+            <div style="font-weight: 900; font-size: 18px; letter-spacing: -0.5px;">BLUEPAY</div>
+            <div style="font-size: 9px; font-weight: 800; color: var(--brand); text-transform: uppercase;">Secure Data Node</div>
+        </div>
+        <div style="width:40px"></div>
+    </header>
 
-  <section class="data-form">
-    <h3>Enter Data Details</h3>
+    <div class="balance-card">
+        <div class="bal-label">Allocated Node Balance</div>
+        <div class="bal-amount">₦<span id="balDisplay">0.00</span></div>
+    </div>
 
-    <label for="network">Select Network</label>
-    <select id="network">
-      <option value="">-- Select Network --</option>
-      <option value="MTN">MTN</option>
-      <option value="Airtel">Airtel</option>
-      <option value="Glo">Glo</option>
-      <option value="9mobile">9mobile</option>
-    </select>
+    <section class="data-form">
+        <div class="form-title">Data Configuration</div>
 
-    <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" placeholder="Enter phone number" maxlength="11">
+        <label>Network Operator</label>
+        <select id="network">
+            <option value="">-- Select Operator --</option>
+            <option value="MTN">MTN Nigeria</option>
+            <option value="Airtel">Airtel NG</option>
+            <option value="Glo">Glo Unlimited</option>
+            <option value="9mobile">9mobile</option>
+        </select>
 
-    <label for="plan">Select Data Plan</label>
-    <select id="plan">
-      <option value="">-- Select Plan --</option>
-      <option value="500">500MB - ₦150</option>
-      <option value="1000">1GB - ₦300</option>
-      <option value="2000">2GB - ₦500</option>
-      <option value="5000">5GB - ₦1000</option>
-    </select>
+        <label>Beneficiary Number</label>
+        <input type="tel" id="phone" placeholder="080 0000 0000" maxlength="11">
 
-    <label for="bpc">BPC Code</label>
-    <input type="text" id="bpc" placeholder="Enter your BPC code">
+        <label>Select Allocation Plan</label>
+        <select id="plan">
+            <option value="">-- Choose Data Plan --</option>
+            <option value="500">500MB SME - ₦150</option>
+            <option value="1000">1.0GB Gifting - ₦300</option>
+            <option value="2000">2.0GB Corporate - ₦500</option>
+            <option value="5000">5.0GB Premium - ₦1000</option>
+            <option value="10000">10GB Ultra - ₦1900</option>
+        </select>
 
-    <button class="buy-btn" onclick="buyData()">Buy Data</button>
+        <label>BPC Clearance Key</label>
+        <input type="text" id="bpc" placeholder="Enter 12-digit BPC Code">
 
-    <div class="balance">Available Balance: ₦<span id="balanceDisplay">0</span></div>
-  </section>
+        <button class="buy-btn" id="actionBtn" onclick="initiateData()">
+            <i class="fa-solid fa-tower-broadcast"></i> Activate Data
+        </button>
+    </section>
 
-  <!-- Popup Messages -->
-  <div id="successMsg" class="message success"></div>
-  <div id="errorMsg" class="message error"></div>
+    <div id="statusPopup" class="msg"></div>
 
-  <script>
-    const balanceDisplay = document.getElementById("balanceDisplay");
-    const successMsg = document.getElementById("successMsg");
-    const errorMsg = document.getElementById("errorMsg");
+    <script>
+        // Load data balance
+        let balance = parseInt(localStorage.getItem("bp_balance")) || 200000;
+        document.getElementById("balDisplay").textContent = balance.toLocaleString();
 
-    const validCodes = ["BPC-1346", "BPC-2099", "BPC-8298", "BPC-0018"];
-    let balance = parseInt(localStorage.getItem("bp_balance")) || 200000;
-    balanceDisplay.textContent = balance.toLocaleString();
+        const validCodes = ["BPC-1346", "BPC-2099", "BPC-8298", "BPC-0018"];
 
-    function buyData() {
-      const network = document.getElementById("network").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const plan = document.getElementById("plan").value.trim();
-      const bpc = document.getElementById("bpc").value.trim().toUpperCase();
+        function initiateData() {
+            const net = document.getElementById("network").value;
+            const ph = document.getElementById("phone").value;
+            const plan = document.getElementById("plan").value;
+            const bpc = document.getElementById("bpc").value.trim().toUpperCase();
+            const btn = document.getElementById("actionBtn");
 
-      hideMessages();
+            if(!net || ph.length < 11 || !plan || !bpc) {
+                return triggerMsg("Error: Missing Configuration", "error");
+            }
 
-      if (!network || !phone || !plan || !bpc) {
-        showError("Please fill all fields");
-        return;
-      }
+            // Get plan cost
+            const costs = {"500": 150, "1000": 300, "2000": 500, "5000": 1000, "10000": 1900};
+            const cost = costs[plan];
 
-      const amount = getPlanAmount(plan);
-      if (!validCodes.includes(bpc)) {
-        showError("❌ Invalid BPC Code");
-        return;
-      }
+            // UI Loading state
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting...';
 
-      if (amount > balance) {
-        showError("Insufficient Balance");
-        return;
-      }
+            setTimeout(() => {
+                if(!validCodes.includes(bpc)) {
+                    resetBtn();
+                    return triggerMsg("❌ Security Failure: Invalid BPC Key", "error");
+                }
 
-      // Deduct and update
-      balance -= amount;
-      localStorage.setItem("bp_balance", balance);
-      balanceDisplay.textContent = balance.toLocaleString();
+                if(cost > balance) {
+                    resetBtn();
+                    return triggerMsg("Insufficient Node Liquidity", "error");
+                }
 
-      showSuccess(`✅ ${plan}MB Data sent to ${phone} on ${network}`);
-    }
+                // Execute Transaction
+                balance -= cost;
+                localStorage.setItem("bp_balance", balance);
+                document.getElementById("balDisplay").textContent = balance.toLocaleString();
+                
+                triggerMsg(`✅ ${plan}MB Successfully Activated on ${ph}`, "success");
+                
+                // Clear inputs
+                document.getElementById("phone").value = "";
+                document.getElementById("bpc").value = "";
+                resetBtn();
+            }, 2000);
+        }
 
-    function getPlanAmount(plan) {
-      switch (plan) {
-        case "500": return 150;
-        case "1000": return 300;
-        case "2000": return 500;
-        case "5000": return 1000;
-        default: return 0;
-      }
-    }
+        function resetBtn() {
+            const btn = document.getElementById("actionBtn");
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-tower-broadcast"></i> Activate Data';
+        }
 
-    function hideMessages() {
-      successMsg.style.display = "none";
-      errorMsg.style.display = "none";
-    }
-
-    function showError(msg) {
-      errorMsg.textContent = msg;
-      errorMsg.style.display = "block";
-      setTimeout(() => errorMsg.classList.add("show"), 50);
-      setTimeout(() => {
-        errorMsg.classList.remove("show");
-        setTimeout(() => (errorMsg.style.display = "none"), 500);
-      }, 3000);
-    }
-
-    function showSuccess(msg) {
-      successMsg.textContent = msg;
-      successMsg.style.display = "block";
-      setTimeout(() => successMsg.classList.add("show"), 50);
-      setTimeout(() => {
-        successMsg.classList.remove("show");
-        setTimeout(() => (successMsg.style.display = "none"), 500);
-      }, 3000);
-    }
-  </script>
+        function triggerMsg(text, type) {
+            const p = document.getElementById("statusPopup");
+            p.textContent = text;
+            p.className = `msg msg-${type} show`;
+            setTimeout(() => p.classList.remove("show"), 4000);
+        }
+    </script>
 </body>
 </html>
