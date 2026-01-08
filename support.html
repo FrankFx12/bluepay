@@ -1,145 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Support | BLUEPAY</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <title>BluePay | Support Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        :root { --brand: #0052FF; --dark: #07090F; --slate: #64748B; --bg: #F8FAFC; }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-    body {
-      background: #f5f6fa;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
+        body {
+            background: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-    .support-container {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      width: 100%;
-      max-width: 420px;
-      padding: 24px;
-      text-align: center;
-    }
+        .support-card {
+            background: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 440px;
+            padding: 35px 25px;
+            text-align: center;
+            border: 1px solid #f1f5f9;
+            position: relative;
+        }
 
-    .support-container h1 {
-      color: #0047FF;
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            position: absolute;
+            top: 25px; left: 20px; right: 20px;
+        }
 
-    .support-container p {
-      font-size: 14px;
-      color: #555;
-      margin-bottom: 20px;
-    }
+        .back-btn { 
+            background: #f1f5f9; border: 0; width: 40px; height: 40px; border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; color: var(--dark);
+            cursor: pointer;
+        }
 
-    .input-field {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      margin-bottom: 14px;
-      font-size: 14px;
-      outline: none;
-      transition: 0.2s;
-    }
+        .support-icon {
+            width: 70px; height: 70px; background: rgba(0, 82, 255, 0.08);
+            border-radius: 22px; display: flex; align-items: center; justify-content: center;
+            font-size: 30px; color: var(--brand); margin: 30px auto 15px;
+        }
 
-    .input-field:focus {
-      border-color: #0047FF;
-      box-shadow: 0 0 5px rgba(0, 71, 255, 0.2);
-    }
+        h1 { font-size: 24px; font-weight: 900; margin: 0; color: var(--dark); letter-spacing: -0.5px; }
+        p { font-size: 14px; color: var(--slate); font-weight: 600; margin-bottom: 25px; }
 
-    textarea {
-      resize: none;
-      height: 100px;
-    }
+        .input-group { text-align: left; }
+        label { font-size: 11px; font-weight: 800; color: var(--slate); text-transform: uppercase; margin-left: 5px; margin-bottom: 6px; display: block; }
 
-    .send-btn {
-      width: 100%;
-      background: #0047FF;
-      color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+        .input-field {
+            width: 100%; padding: 16px; border: 1.5px solid #edf2f7; border-radius: 14px;
+            margin-bottom: 15px; font-size: 15px; font-weight: 600; outline: none; transition: 0.3s;
+            background: #FAFAFA;
+        }
+        .input-field:focus { border-color: var(--brand); background: #fff; box-shadow: 0 0 0 4px rgba(0, 82, 255, 0.05); }
 
-    .send-btn:hover {
-      background: #0036c7;
-    }
+        textarea { resize: none; height: 120px; }
 
-    .support-icon {
-      font-size: 45px;
-      color: #0047FF;
-      margin-bottom: 10px;
-    }
+        .send-btn {
+            width: 100%; background: var(--brand); color: #fff; border: none; padding: 18px;
+            border-radius: 16px; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .send-btn:active { transform: scale(0.97); }
 
-    footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 13px;
-      color: #888;
-    }
+        .divider { margin: 25px 0; display: flex; align-items: center; color: #cbd5e1; font-size: 12px; font-weight: 700; }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #edf2f7; margin: 0 10px; }
 
-    @media (max-width: 480px) {
-      .support-container {
-        padding: 18px;
-      }
+        .tg-btn {
+            width: 100%; background: #0088cc; color: #fff; border: none; padding: 15px;
+            border-radius: 16px; font-size: 14px; font-weight: 800; cursor: pointer;
+            text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
 
-      .support-container h1 {
-        font-size: 20px;
-      }
-    }
-  </style>
+        footer { margin-top: 25px; font-size: 11px; color: #94a3b8; font-weight: 700; letter-spacing: 0.5px; }
+
+    </style>
 </head>
 <body>
 
-  <div class="support-container">
-    <i class="fa-solid fa-headset support-icon"></i>
-    <h1>BLUEPAY Support</h1>
-    <p>Need help? Send us an email below 👇</p>
+    <div class="support-card">
+        <header>
+            <button class="back-btn" onclick="location.href='dashboard.html'"><i class="fa-solid fa-chevron-left"></i></button>
+        </header>
 
-    <input type="text" id="name" class="input-field" placeholder="Your Name" required>
-    <input type="email" id="email" class="input-field" placeholder="Your Email" required>
-    <textarea id="message" class="input-field" placeholder="Type your message..." required></textarea>
+        <div class="support-icon">
+            <i class="fa-solid fa-headset"></i>
+        </div>
+        <h1>Help Center</h1>
+        <p>Our agents are online to assist you.</p>
 
-    <button class="send-btn" onclick="sendEmail()">Send Message</button>
-  </div>
+        <div class="input-group">
+            <label>Registered Name</label>
+            <input type="text" id="name" class="input-field" placeholder="Enter your name">
+            
+            <label>Message Details</label>
+            <textarea id="message" class="input-field" placeholder="Describe your issue..."></textarea>
+        </div>
 
-  <footer>© 2025 BLUEPAY • Support Center</footer>
+        <button class="send-btn" onclick="sendEmail()">
+            <i class="fa-solid fa-paper-plane"></i> Send Ticket
+        </button>
 
-  <script>
-    function sendEmail() {
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const message = document.getElementById("message").value.trim();
+        <div class="divider">OR CHAT DIRECTLY</div>
 
-      if (!name || !email || !message) {
-        alert("Please fill in all fields before sending.");
-        return;
-      }
+        <a href="https://t.me/bpc_customer_care" class="tg-btn">
+            <i class="fa-brands fa-telegram"></i> Message on Telegram
+        </a>
 
-      const subject = encodeURIComponent("BLUEPAY Support Request from " + name);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-      const mailtoLink = `mailto:marouzezi14@gmail.com?subject=${subject}&body=${body}`;
+        <footer>BLUEPAY SECURITY PROTOCOL © 2026</footer>
+    </div>
 
-      window.location.href = mailtoLink;
-    }
-  </script>
+    <script>
+        // Auto-fill name if logged in
+        window.onload = () => {
+            const savedName = localStorage.getItem('userName');
+            if(savedName) document.getElementById('name').value = savedName;
+        };
+
+        function sendEmail() {
+            const name = document.getElementById("name").value.trim();
+            const email = localStorage.getItem('userEmail') || 'Not Set';
+            const message = document.getElementById("message").value.trim();
+
+            if (!name || !message) {
+                alert("Please complete the form.");
+                return;
+            }
+
+            const subject = encodeURIComponent("SUPPORT: Account Node #" + (localStorage.getItem('node_serial') || 'NEW'));
+            const body = encodeURIComponent(`Node Name: ${name}\nEmail: ${email}\n\nIssue:\n${message}`);
+            
+            // Redirects to their email app
+            window.location.href = `mailto:marouzezi14@gmail.com?subject=${subject}&body=${body}`;
+        }
+    </script>
 
 </body>
 </html>
