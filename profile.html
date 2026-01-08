@@ -1,212 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile - BLUEPAY</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <title>BluePay | Node Security</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+    <style>
+        :root { --brand: #0052FF; --dark: #07090F; --slate: #64748B; --bg: #0A0F1E; --success: #00D67D; }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-    body {
-      background: #f5f6fa;
-      color: #111;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 30px 10px;
-    }
+        body {
+            background: var(--bg);
+            background-image: radial-gradient(circle at 0% 0%, rgba(0, 82, 255, 0.15) 0%, transparent 50%),
+                              radial-gradient(circle at 100% 100%, rgba(0, 214, 125, 0.05) 0%, transparent 50%);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-    .profile-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 25px;
-      width: 100%;
-      max-width: 420px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
+        .node-container { width: 100%; max-width: 440px; animation: slideUp 0.6s ease; }
 
-    .avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: #0047FF;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      font-size: 40px;
-      box-shadow: 0 4px 10px rgba(0,71,255,0.3);
-    }
+        /* Navigation */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .back-btn { 
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 45px; height: 45px; border-radius: 15px; 
+            display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer;
+        }
 
-    h2 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #0047FF;
-      margin-bottom: 4px;
-    }
+        /* Profile Card */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 35px;
+            padding: 40px 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
 
-    p {
-      font-size: 14px;
-      margin-bottom: 8px;
-      color: #555;
-    }
+        .avatar-box {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 25px;
+            padding: 5px;
+            border: 2px solid var(--brand);
+            border-radius: 40%;
+        }
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 35%;
+            background: linear-gradient(135deg, var(--brand), #002980);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 0 30px rgba(0, 82, 255, 0.3);
+        }
+        .verified-badge {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            background: var(--success);
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 900;
+            border: 4px solid var(--bg);
+        }
 
-    .info-section {
-      margin-top: 20px;
-      text-align: left;
-    }
+        h2 { font-size: 28px; font-weight: 800; margin: 0; letter-spacing: -1px; }
+        .node-id { color: var(--brand); font-weight: 700; font-size: 13px; margin-top: 5px; display: block; }
 
-    .info-section h3 {
-      color: #0047FF;
-      font-size: 16px;
-      margin-bottom: 12px;
-      font-weight: 700;
-    }
+        /* Info Display */
+        .info-stack { margin-top: 35px; text-align: left; }
+        .info-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 16px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .icon-circle {
+            width: 40px; height: 40px; border-radius: 12px; background: rgba(0, 82, 255, 0.1);
+            display: flex; align-items: center; justify-content: center; color: var(--brand);
+        }
+        .info-text label { display: block; font-size: 9px; font-weight: 800; color: var(--slate); text-transform: uppercase; margin-bottom: 2px; }
+        .info-text span { font-weight: 700; font-size: 15px; letter-spacing: 0.3px; }
 
-    .info-box {
-      background: #f1f4ff;
-      border: 1px solid #dce4ff;
-      border-radius: 10px;
-      padding: 12px 16px;
-      margin-bottom: 10px;
-    }
+        /* Buttons */
+        .actions { margin-top: 30px; display: grid; gap: 15px; }
+        .btn {
+            padding: 20px; border-radius: 18px; border: none; font-size: 16px; 
+            font-weight: 800; cursor: pointer; transition: 0.3s;
+        }
+        .btn-edit { background: var(--brand); color: #fff; box-shadow: 0 10px 25px rgba(0, 82, 255, 0.3); }
+        .btn-logout { background: transparent; color: #ff4d4d; border: 1px solid rgba(255, 77, 77, 0.2); }
 
-    .info-box strong {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #111;
-    }
-
-    .edit-btn {
-      margin-top: 20px;
-      padding: 12px 24px;
-      background: #0047FF;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s ease;
-      width: 100%;
-    }
-
-    .edit-btn:hover {
-      background: #0036c2;
-    }
-
-    .logout-btn {
-      margin-top: 12px;
-      padding: 10px 24px;
-      background: #f44336;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s ease;
-      width: 100%;
-    }
-
-    .logout-btn:hover {
-      background: #d32f2f;
-    }
-
-    @media (max-width: 600px) {
-      .profile-card {
-        padding: 20px;
-      }
-      .avatar {
-        width: 80px;
-        height: 80px;
-        font-size: 32px;
-      }
-    }
-  </style>
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } }
+    </style>
 </head>
 <body>
 
-  <div class="profile-card">
-    <div class="avatar">👤</div>
-    <h2 id="profile-name">User</h2>
-    <p id="profile-email">user@email.com</p>
-    <p>Joined: <span id="profile-date"></span></p>
+    <div class="node-container">
+        <header>
+            <button class="back-btn" onclick="location.href='dashboard.html'"><i class="fa-solid fa-arrow-left"></i></button>
+            <div style="font-weight: 800; font-size: 18px; letter-spacing: 1px;">PROFILE NODE</div>
+            <div style="width:45px"></div>
+        </header>
 
-    <div class="info-section">
-      <h3>My Info</h3>
+        <div class="card">
+            <div class="avatar-box">
+                <div class="avatar">👤</div>
+                <div class="verified-badge"><i class="fa-solid fa-check-double"></i> ACTIVE</div>
+            </div>
+            
+            <h2 id="userNameText">---</h2>
+            <span class="node-id">SECURE_NODE_ID: #<span id="nodeIDText"></span></span>
 
-      <div class="info-box">
-        <strong>Name:</strong>
-        <span id="nameBox">User</span>
-      </div>
+            <div class="info-stack">
+                <div class="info-item">
+                    <div class="icon-circle"><i class="fa-solid fa-id-card"></i></div>
+                    <div class="info-text">
+                        <label>Registry Name</label>
+                        <span id="nameLabel">---</span>
+                    </div>
+                </div>
 
-      <div class="info-box">
-        <strong>Email:</strong>
-        <span id="emailBox">user@email.com</span>
-      </div>
+                <div class="info-item">
+                    <div class="icon-circle"><i class="fa-solid fa-fingerprint"></i></div>
+                    <div class="info-text">
+                        <label>Node Email Address</label>
+                        <span id="emailLabel">---</span>
+                    </div>
+                </div>
 
-      <div class="info-box">
-        <strong>Join Date:</strong>
-        <span id="dateBox"></span>
-      </div>
+                <div class="info-item">
+                    <div class="icon-circle"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="info-text">
+                        <label>Validation Date</label>
+                        <span id="dateLabel">---</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-edit" id="editBtn"><i class="fa-solid fa-sliders"></i> Modify Node Credentials</button>
+                <button class="btn btn-logout" id="logoutBtn">Terminate Session</button>
+            </div>
+        </div>
     </div>
 
-    <button class="edit-btn" id="editBtn"><i class="fa-solid fa-pen-to-square"></i> Edit Profile</button>
-    <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-door-open"></i> Logout</button>
-  </div>
+    <script>
+        // Initialize logic
+        if(!localStorage.getItem("node_serial")) {
+            localStorage.setItem("node_serial", Math.floor(200000 + Math.random() * 700000));
+        }
 
-  <script>
-    // Save join date once
-    if (!localStorage.getItem("joinDate")) {
-      localStorage.setItem("joinDate", new Date().toLocaleDateString());
-    }
+        if (!localStorage.getItem("node_created")) {
+            localStorage.setItem("node_created", new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }));
+        }
 
-    const name = localStorage.getItem("userName") || "User";
-    const email = localStorage.getItem("userEmail") || "marouzezi14@gmail.com";
-    const date = localStorage.getItem("joinDate");
+        const name = localStorage.getItem("userName") || "Guest User";
+        const email = localStorage.getItem("userEmail") || "Not Connected";
+        const date = localStorage.getItem("node_created");
+        const serial = localStorage.getItem("node_serial");
 
-    // Display info
-    document.getElementById("profile-name").textContent = name;
-    document.getElementById("profile-email").textContent = email;
-    document.getElementById("profile-date").textContent = date;
-    document.getElementById("nameBox").textContent = name;
-    document.getElementById("emailBox").textContent = email;
-    document.getElementById("dateBox").textContent = date;
+        // UI Injection
+        document.getElementById("userNameText").textContent = name;
+        document.getElementById("nameLabel").textContent = name;
+        document.getElementById("emailLabel").textContent = email;
+        document.getElementById("dateLabel").textContent = date;
+        document.getElementById("nodeIDText").textContent = serial;
 
-    // Edit button
-    document.getElementById("editBtn").addEventListener("click", () => {
-      const newName = prompt("Enter new name:", name);
-      const newEmail = prompt("Enter new email:", email);
+        // Edit Profile
+        document.getElementById("editBtn").onclick = () => {
+            const newN = prompt("Enter new Node Identity:", name);
+            if(newN && newN.length > 2) {
+                localStorage.setItem("userName", newN);
+                location.reload();
+            }
+        };
 
-      if (newName && newEmail) {
-        localStorage.setItem("userName", newName);
-        localStorage.setItem("userEmail", newEmail);
-        document.getElementById("profile-name").textContent = newName;
-        document.getElementById("profile-email").textContent = newEmail;
-        document.getElementById("nameBox").textContent = newName;
-        document.getElementById("emailBox").textContent = newEmail;
-        alert("Profile updated successfully!");
-      }
-    });
-
-    // Logout
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      if (confirm("Are you sure you want to logout?")) {
-        localStorage.clear();
-        window.location.href = "index.html";
-      }
-    });
-  </script>
-
+        // Logout
+        document.getElementById("logoutBtn").onclick = () => {
+            if(confirm("Are you sure you want to terminate this node session? All local data will be wiped.")) {
+                localStorage.clear();
+                window.location.href = "index.html";
+            }
+        };
+    </script>
 </body>
 </html>
