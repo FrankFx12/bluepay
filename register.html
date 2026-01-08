@@ -1,214 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BluePay | Register</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0055cc; /* blue background */
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+    <title>BluePay | Secure Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: #0052FF; --dark: #07090F; --bg: #F0F4F8; }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            margin: 0;
+            background: linear-gradient(180deg, #001A4D 0%, #000000 100%);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-    /* top help link */
-    .help-link {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 0.9rem;
-    }
-    .help-link a {
-      color: #fff;
-      text-decoration: underline;
-      font-weight: bold;
-    }
+        .help-link {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .help-link a { color: var(--brand); text-decoration: none; text-transform: uppercase; }
 
-    .register-box {
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
+        .register-box {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
 
-    .register-box h1 {
-      margin-bottom: 5px;
-      font-size: 2rem;
-      font-weight: bold;
-    }
+        .logo { font-weight: 900; font-size: 32px; color: #fff; letter-spacing: -1.5px; margin-bottom: 10px; }
+        .logo span { color: var(--brand); }
 
-    .register-box h2 {
-      margin: 5px 0;
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
+        h2 { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+        .sub-text { font-size: 14px; color: #94A3B8; margin-bottom: 30px; line-height: 1.5; }
 
-    .register-box p {
-      font-size: 0.9rem;
-      margin-bottom: 25px;
-    }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; font-size: 12px; font-weight: 700; color: #94A3B8; text-transform: uppercase; }
 
-    .form-group {
-      margin-bottom: 15px;
-      text-align: left;
-    }
+        input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--brand); background: rgba(255,255,255,0.1); }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 0.85rem;
-      font-weight: bold;
-    }
+        .password-wrapper { position: relative; }
+        .toggle-eye {
+            position: absolute;
+            right: 15px;
+            top: 45px;
+            cursor: pointer;
+            color: #94A3B8;
+            font-size: 18px;
+        }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      box-sizing: border-box;
-    }
+        .terms { margin: 20px 0; font-size: 12px; color: #64748B; line-height: 1.4; }
 
-    input:focus {
-      outline: 2px solid #003366;
-    }
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            background: var(--brand);
+            color: #fff;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 82, 255, 0.2);
+            text-transform: uppercase;
+        }
 
-    .terms {
-      margin: 15px 0;
-      font-size: 0.8rem;
-    }
+        .login-link { margin-top: 25px; font-size: 14px; color: #94A3B8; }
+        .login-link a { color: #fff; font-weight: 700; text-decoration: none; }
 
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 25px;
-      background: #fff;
-      color: #0055cc;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background: #e6e6e6;
-    }
-
-    .login-link {
-      margin-top: 15px;
-      font-size: 0.9rem;
-    }
-
-    .login-link a {
-      color: #fff;
-      font-weight: bold;
-      text-decoration: underline;
-    }
-
-    /* Password wrapper */
-    .password-wrapper {
-      position: relative;
-    }
-
-    .password-wrapper input {
-      padding-right: 45px; /* space for eye */
-    }
-
-    .toggle-eye {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 1.2rem;
-      color: #333;
-      user-select: none;
-    }
-  </style>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
-  <!-- Help link top right -->
-  <div class="help-link">
-    <a href="https://t.me/bpc_customer_care" target="_blank">You Need Help?</a>
-  </div>
 
-  <div class="register-box">
-    <h1>BLUEPAY</h1>
-    <h2>Welcome!</h2>
-    <p>Get your account ready and instantly start buying, selling airtime and data online and start paying all your bills in cheaper price.</p>
-
-    <form action="pin.html">
-      <div class="form-group">
-        <label for="name">Your Full Name</label>
-        <input type="text" id="name" name="name" autocomplete="name" required>
-      </div>
-
-      <div class="form-group">
-        <label for="email">Your Email</label>
-        <input type="email" id="email" name="email" autocomplete="email" required>
-      </div>
-
-      <div class="form-group password-wrapper">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" autocomplete="new-password" required>
-        <span class="toggle-eye" onclick="togglePassword()" id="eyeIcon">👁</span>
-      </div>
-
-      <div class="terms">
-        Any further actions indicates that you agree with our terms &amp; conditions!
-      </div>
-
-      <button type="submit" class="btn">Create account</button>
-    </form>
-
-    <div class="login-link">
-      Already have an account? <a href="login.html">Sign in</a>
+    <div class="help-link">
+        <a href="https://t.me/bpc_customer_care" target="_blank"><i class="fa-solid fa-headset"></i> Get Help</a>
     </div>
-  </div>
 
-  <script>
-    function togglePassword() {
-      const passwordField = document.getElementById("password");
-      const eyeIcon = document.getElementById("eyeIcon");
+    <div class="register-box">
+        <div class="logo">BLUE<span>PAY.</span></div>
+        <h2>Create Account</h2>
+        <p class="sub-text">Join the secure node and start mining your earnings instantly.</p>
 
-      if (passwordField.type === "password") {
-        passwordField.type = "text";
-        eyeIcon.textContent = "🙈";
-      } else {
-        passwordField.type = "password";
-        eyeIcon.textContent = "👁";
-      }
-     }
-  document.querySelector("form").addEventListener("submit", function(e) {
-    e.preventDefault();
+        <form id="regForm">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Enter Full Name" required>
+            </div>
 
-    // save name into localStorage
-    const name = document.getElementById("name").value;
-    localStorage.setItem("userName", name);
-    // Example after form submit or "Create Account" button
-const userName = document.getElementById("name").value; // or whatever your name input id is
-localStorage.setItem("userName", userName);
-window.location.href = "dashboard.html"; // redirect to dashboard
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="name@example.com" required>
+            </div>
 
+            <div class="form-group password-wrapper">
+                <label>Security Password</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+                <span class="toggle-eye" onclick="togglePassword()" id="eyeIcon">
+                    <i class="fa-solid fa-eye"></i>
+                </span>
+            </div>
 
-    // redirect to pin page
-    window.location.href = "pin.html";
-  });
+            <div class="terms">
+                By clicking "Create Account", you agree to the BluePay Secure Banking Terms and Node Protocols.
+            </div>
 
-  localStorage.setItem("username", nameValue);
-  localStorage.setItem("useremail", emailValue);
+            <button type="submit" class="btn">Create account</button>
+        </form>
 
-  window.onload = function() {
-    document.getElementById("buyerName").value = localStorage.getItem("username") || "";
-    document.getElementById("buyerEmail").value = localStorage.getItem("useremail") || "";
-  };
-</script>
+        <div class="login-link">
+            Already a member? <a href="login.html">Sign in</a>
+        </div>
+    </div>
 
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            const eyeIcon = document.getElementById("eyeIcon");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                eyeIcon.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+            } else {
+                passwordField.type = "password";
+                eyeIcon.innerHTML = '<i class="fa-solid fa-eye"></i>';
+            }
+        }
 
-</script>
+        document.getElementById("regForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            // Capture Data
+            const nameValue = document.getElementById("name").value;
+            const emailValue = document.getElementById("email").value;
+
+            // Save to Storage
+            localStorage.setItem("userName", nameValue);
+            localStorage.setItem("userEmail", emailValue);
+
+            // Redirect to PIN page (as per your flow)
+            window.location.href = "pin.html";
+        });
+    </script>
 </body>
 </html>

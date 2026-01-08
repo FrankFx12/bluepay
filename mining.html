@@ -1,118 +1,208 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>BLUEPAY — Daily Unlock</title>
-<style>
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #003366, #0055aa);
-    font-family: Arial, sans-serif;
-    color: white;
-    text-align: center;
-  }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" />
+    <title>BluePay | Secure Mining Node</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: #0052FF; --dark: #07090F; --success: #00D67D; }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        
+        body {
+            margin: 0;
+            background: #000;
+            background: radial-gradient(circle at center, #001A4D 0%, #000000 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+        }
 
-  .container {
-    background: rgba(255, 255, 255, 0.95);
-    color: #0f1724;
-    border-radius: 14px;
-    padding: 30px 25px;
-    box-shadow: 0 12px 40px rgba(2,10,34,0.35);
-    max-width: 420px;
-    width: 100%;
-  }
+        .node-shell {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
 
-  h1 {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
+        .status-tag {
+            background: rgba(0, 214, 125, 0.1);
+            color: var(--success);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 214, 125, 0.2);
+        }
 
-  p {
-    font-size: 14px;
-    color: #3f5568;
-  }
+        .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); animation: pulse 1s infinite; }
 
-  .gift {
-    margin: 25px auto;
-    width: 150px;
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f6fbff;
-    border-radius: 16px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-    font-size: 90px; /* Big gift icon */
-  }
+        h1 { font-size: 28px; font-weight: 900; margin: 0 0 10px; letter-spacing: -1px; }
+        p { color: #94A3B8; font-size: 15px; margin-bottom: 40px; }
 
-  .rotating {
-    animation: spin 1s linear infinite;
-  }
+        /* MINING VISUAL */
+        .mining-circle {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 40px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
+        .ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
 
-  .btn {
-    background: #0066ff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-  }
+        .progress-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-top-color: var(--brand);
+            border-radius: 50%;
+            display: none; /* Hidden until start */
+        }
 
-  .btn:hover { background: #004ecc; }
+        .counter-box { z-index: 10; }
+        .currency { font-size: 18px; font-weight: 600; vertical-align: middle; margin-right: 4px; color: #94A3B8; }
+        #liveAmt { font-size: 38px; font-weight: 900; letter-spacing: -1px; }
 
-  .success {
-    margin-top: 15px;
-    font-weight: bold;
-    color: #00b37e;
-  }
-</style>
+        /* BUTTONS */
+        .btn-mine {
+            width: 100%;
+            padding: 20px;
+            background: var(--brand);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 15px 30px rgba(0, 82, 255, 0.2);
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .btn-mine:disabled { background: rgba(255,255,255,0.1); color: #475569; cursor: not-allowed; box-shadow: none; }
+
+        .log-box {
+            margin-top: 30px;
+            height: 60px;
+            overflow: hidden;
+            font-family: monospace;
+            font-size: 10px;
+            color: #475569;
+            text-align: left;
+            background: rgba(255,255,255,0.02);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } }
+
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Unlock Your Daily Balance</h1>
-    <p>Tap the gift box below to unlock your ₦200,000 balance for today.</p>
 
-    <div class="gift" id="giftBox">🎁</div>
+    <div class="node-shell">
+        <div class="status-tag"><div class="dot"></div> NODE: SECURE_ALPHA_2026</div>
+        
+        <h1>Data Mining</h1>
+        <p>Initializing high-velocity asset generation...</p>
 
-    <button class="btn" id="mineBtn">Start Mining</button>
-    <div class="success" id="successMsg" style="display:none;">
-      ₦200,000 unlocked successfully 🎉 Redirecting...
+        <div class="mining-circle">
+            <div class="ring"></div>
+            <div class="progress-ring" id="spinner"></div>
+            <div class="counter-box">
+                <span class="currency">₦</span><span id="liveAmt">0.00</span>
+            </div>
+        </div>
+
+        <button class="btn-mine" id="startBtn" onclick="startMining()">TAP TO MINE</button>
+
+        <div class="log-box" id="logs">
+            [SYS] Waiting for user authorization...<br>
+            [SYS] Node connection: STABLE
+        </div>
     </div>
-  </div>
 
-  <script>
-    const mineBtn = document.getElementById('mineBtn');
-    const giftBox = document.getElementById('giftBox');
-    const successMsg = document.getElementById('successMsg');
+    <script>
+        const logs = [
+            "Syncing with global ledger...",
+            "Validating node credentials...",
+            "Encrypting data packets...",
+            "Mining block #88219...",
+            "Authorizing asset liquidity...",
+            "Finalizing 256-bit hash...",
+            "Clearing bank route...",
+            "Settling node rewards..."
+        ];
 
-    mineBtn.addEventListener('click', () => {
-      mineBtn.disabled = true;
-      mineBtn.textContent = "Mining...";
-      giftBox.classList.add('rotating');
+        function startMining() {
+            const btn = document.getElementById('startBtn');
+            const spinner = document.getElementById('spinner');
+            const liveAmt = document.getElementById('liveAmt');
+            const logBox = document.getElementById('logs');
+            
+            btn.disabled = true;
+            btn.innerText = "MINING IN PROGRESS...";
+            spinner.style.display = "block";
+            spinner.style.animation = "spin 1.5s linear infinite";
 
-      setTimeout(() => {
-        giftBox.classList.remove('rotating');
-        mineBtn.style.display = 'none';
-        successMsg.style.display = 'block';
+            let balance = 0;
+            const target = 200000;
+            const duration = 20000; // 20 Seconds Mining
+            const intervalTime = 50; 
+            const increment = target / (duration / intervalTime);
 
-        // Auto redirect to dashboard after success
-        setTimeout(() => {
-          window.location.href = "dashboard.html";
-        }, 2000); // 2 sec after unlock
-      }, 30000); // 30 secs
-    });
-  </script>
+            // Audio feedback (Optional - simple beep feel)
+            
+            const timer = setInterval(() => {
+                balance += increment;
+                if (balance >= target) {
+                    balance = target;
+                    clearInterval(timer);
+                    finalizeMining();
+                }
+                liveAmt.innerText = balance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                
+                // Random Logs
+                if (Math.random() > 0.9) {
+                    const randomLog = logs[Math.floor(Math.random() * logs.length)];
+                    logBox.innerHTML = `[NODE] ${randomLog}<br>` + logBox.innerHTML;
+                }
+            }, intervalTime);
+        }
+
+        function finalizeMining() {
+            const logBox = document.getElementById('logs');
+            logBox.innerHTML = `<span style="color:var(--success)">[SUCCESS] ₦200,000.00 SETTLED.</span><br>` + logBox.innerHTML;
+            
+            // Save balance for dashboard
+            localStorage.setItem('bp_balance', 200000);
+
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 2500);
+        }
+    </script>
 </body>
 </html>
