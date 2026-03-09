@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAC Official Certificate | BLUEPAY TECHNOLOGY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,600&family=Dancing+Script:wght@600&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --cac-green: #008751; --cac-red: #D32F2F; }
+        
+        body { 
+            background: #4a4a4a; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+            padding: 20px; 
+            margin: 0;
+            font-family: 'Crimson Pro', serif;
+        }
+
+        .cert-paper {
+            background: #fff;
+            width: 100%;
+            max-width: 550px;
+            position: relative;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+            border: 1px solid #ddd;
+        }
+
+        .border-wrapper {
+            padding: 12px;
+            background-color: #fff;
+            background-image: repeating-linear-gradient(45deg, var(--cac-green) 0, var(--cac-green) 1px, transparent 0, transparent 50%),
+                              repeating-linear-gradient(-45deg, var(--cac-green) 0, var(--cac-green) 1px, transparent 0, transparent 50%);
+            background-size: 10px 10px;
+            border: 2px solid var(--cac-green);
+        }
+
+        .inner-content {
+            background: white;
+            padding: 40px 30px;
+            border: 2px solid var(--cac-green);
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/e4/Coat_of_arms_of_Nigeria.svg');
+            background-repeat: no-repeat;
+            background-position: center 55%;
+            background-size: 65%;
+            background-blend-mode: overlay;
+            background-color: rgba(255,255,255,0.97);
+            position: relative;
+            text-align: center;
+        }
+
+        .coat-of-arms { width: 85px; margin-bottom: 15px; }
+        .fed-rep { font-size: 11px; font-weight: 700; letter-spacing: 2px; margin: 0; text-transform: uppercase; }
+        .cert-title { font-size: 22px; font-weight: 700; margin: 15px 0 5px; text-transform: uppercase; }
+        .reg-no-label { font-size: 15px; font-weight: 700; margin-bottom: 20px; font-family: 'Outfit', sans-serif; }
+
+        .certify-line { font-style: italic; font-weight: 600; font-size: 17px; margin: 25px 0 10px; }
+
+        .company-name {
+            display: block;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--cac-red);
+            margin: 15px 0;
+            text-transform: uppercase;
+        }
+
+        .legal-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #111;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 50px;
+            text-align: left;
+        }
+
+        .qr-section { width: 80px; text-align: center; }
+        .qr-placeholder {
+            width: 70px; height: 70px;
+            background: url('https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BLUEPAY-RC1882930-VERIFIED');
+            background-size: cover;
+            margin-bottom: 5px;
+        }
+
+        .sig-section { text-align: center; width: 220px; }
+        .hand-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 28px;
+            color: #001B44;
+            margin-bottom: -10px;
+            border-bottom: 1.5px solid #000;
+            display: inline-block;
+            padding: 0 10px;
+        }
+        .sig-name { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; margin-top: 15px; text-transform: uppercase; }
+        .sig-title { font-size: 10px; font-weight: 600; color: #333; }
+
+        .download-btn {
+            background: var(--cac-green);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        @media print {
+            .download-btn { display: none; }
+            body { background: white; padding: 0; }
+            .cert-paper { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="download-btn" onclick="window.print()">Download Official PDF</button>
+
+    <div class="cert-paper">
+        <div class="border-wrapper">
+            <div class="inner-content">
+                
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Coat_of_arms_of_Nigeria.svg" class="coat-of-arms">
+                <p class="fed-rep">Federal Republic of Nigeria</p>
+                <h1 class="cert-title">Certificate of Incorporation</h1>
+                <div class="reg-no-label">RC NO. 1882930</div>
+
+                <div class="certify-line">I hereby certify that</div>
+                
+                <span class="company-name">BLUEPAY TECHNOLOGY LIMITED</span>
+
+                <div class="legal-text">
+                    is this day incorporated under the <br>
+                    <strong>COMPANIES AND ALLIED MATTERS ACT 2020</strong> <br>
+                    and that the Company is Limited By Shares.
+                </div>
+
+                <div class="legal-text">
+                    <i>Given under my hand at Abuja this <br>
+                    <strong>14th day of January, 2024</strong></i>
+                </div>
+
+                <div class="footer-grid">
+                    <div class="qr-section">
+                        <div class="qr-placeholder"></div>
+                        <div style="font-size: 8px; font-weight: 700; margin-top: 10px;">ID: 1882930-BPC</div>
+                    </div>
+
+                    <div style="width: 80px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Seal_of_the_President_of_Nigeria.svg" style="width: 70px; filter: grayscale(1) opacity(0.8);">
+                    </div>
+
+                    <div class="sig-section">
+                        <div class="hand-signature">A. G. Abubakar</div>
+                        <div class="sig-name">A. G. Abubakar</div>
+                        <div class="sig-title">Registrar - General</div>
+                        <div style="font-size: 9px; font-weight: 800; color: var(--cac-green);">CORPORATE AFFAIRS COMMISSION</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 35px; font-size: 8px; color: #999; letter-spacing: 2px;">
+                    VALIDATION: CAC-OFFICIAL-BLUEPAY-2024-SECURE-NODE
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
